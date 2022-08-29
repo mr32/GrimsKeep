@@ -9,6 +9,7 @@ public class TestCard : CreatureCard
         cardName = "Test Card A";
         cardDescription = $"If the card is in the front\nit will get a power boost of {modifyAmount}";
         baseCreaturePower = 5;
+        cardCost = 3;
 
         allowedToBePlayedOn.Add(
             Constants.BATTLE_SQUARE_ID
@@ -27,11 +28,11 @@ public class TestCard : CreatureCard
         }
     }
 
-    public override bool CanPlayCard(GameObject gameObjectPlayedOn)
+    public override bool CanPlayCard(GameObject gameObjectPlayedOn, CardInfo cardPlayed)
     {
         if(gameObjectPlayedOn.GetComponent<BattleSquare>().IsCreatureOnSquare()){
             return false;
         }
-        return true;
+        return base.CanPlayCard(gameObjectPlayedOn, cardPlayed);
     }
 }

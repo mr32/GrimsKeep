@@ -6,7 +6,7 @@ public class CardInfo : CardAction
 {
     public string cardName;
     public string cardDescription;
-    public int cardCost;
+    public uint cardCost;
     public bool cardCopied = false;
 
     public enum CardType {

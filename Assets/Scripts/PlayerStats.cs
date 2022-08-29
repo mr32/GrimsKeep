@@ -9,12 +9,17 @@ public class PlayerStats : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.gameObject.transform.SendMessage(Constants.PLAYER_HEALTH_GRAPHICS_UPDATE_FUNCTION_NAME, this);
+        UpdateCardGraphics();
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void UpdateCardGraphics()
+    {
+        this.gameObject.transform.SendMessage(Constants.PLAYER_HEALTH_GRAPHICS_UPDATE_FUNCTION_NAME, this);
     }
 }

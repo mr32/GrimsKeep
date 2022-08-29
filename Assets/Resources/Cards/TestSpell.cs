@@ -8,6 +8,7 @@ public class TestSpell : SpellCard
         cardName = "Test Spell";
         creatureModifierAmount = 5;
         cardDescription = $"Add {creatureModifierAmount} to target Creature";
+        cardCost = 1;
         cardType = CardType.CREATURE_MODIFIER;
     }
     void Start(){
@@ -22,8 +23,8 @@ public class TestSpell : SpellCard
         creatureCard.additionalPowerModifier += creatureModifierAmount;
     }
 
-    public override bool CanPlayCard(GameObject gameObjectPlayedOn)
+    public override bool CanPlayCard(GameObject gameObjectPlayedOn, CardInfo cardPlayed)
     {
-        return gameObjectPlayedOn.GetComponent<BattleSquare>().IsCreatureOnSquare();
+        return base.CanPlayCard(gameObjectPlayedOn, cardPlayed) && gameObjectPlayedOn.GetComponent<BattleSquare>().IsCreatureOnSquare();
     }
 }

@@ -21,7 +21,7 @@ public class BattleSquare : HoverableObject
         if (mouseOnObject && gameController.cardBeingPlayed && Input.GetMouseButtonDown(0)){
             currentCard = gameController.activeCard.GetComponent<CardInfo>();
 
-            if(currentCard.CanPlayCard(this.gameObject)){
+            if(currentCard.CanPlayCard(this.gameObject, currentCard)){
                 this.gameObject.GetComponent<Image>().color = Color.red;
                 PlayCardOnSquare();
             }
@@ -46,7 +46,7 @@ public class BattleSquare : HoverableObject
 
     public void PlayCardOnSquare(){
         currentCard = gameController.activeCard.GetComponent<CardInfo>();
-        currentCard.PlayCard(Constants.BATTLE_SQUARE_ID, this.gameObject);
+        currentCard.PlayCard(Constants.BATTLE_SQUARE_ID, this.gameObject, currentCard);
         CopyCardInfoToSquare();
         
         

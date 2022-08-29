@@ -11,6 +11,7 @@ public static class Constants
     public static string SET_CARD_GRAPHICS_FUNCTION_NAME = "SetCardGraphics";
     public static string PLAYER_HEALTH_TAG = "PlayerHealthTag";
     public static string PLAYER_MANA_TAG = "PlayerManaTag";
+    public static string PLAYER_STAT_GAMEOBJECT_TAG = "PlayerStats";
 
     public static string BATTLE_SQUARE_ID = "BattleSquare";
     public static string CARD_INFO_ID = "CardInfo";

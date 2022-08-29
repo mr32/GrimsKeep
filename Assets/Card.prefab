@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 9158478570629886881}
   m_Layer: 5
   m_Name: CardCost
-  m_TagString: Untagged
+  m_TagString: CardCost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -823,6 +823,8 @@ MonoBehaviour:
   cardDescGraphic: {fileID: 0}
   cardFlairGraphic: {fileID: 0}
   cardPowerGraphic: {fileID: 0}
+  cardDefenseGraphic: {fileID: 0}
+  cardCostGraphic: {fileID: 0}
 --- !u!1 &2377617882495698681
 GameObject:
   m_ObjectHideFlags: 0
