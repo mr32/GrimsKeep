@@ -4,4 +4,6 @@
     public static string CARD_NAME_TAG = "CardName";
     public static string CARD_FLAIR_TEXT = "CardFlairText";
     public static string CARD_POWER_TAG = "CardPower";
+    public static string CARD_DEFENSE_TAG = "CardDefense";
+    public static string CARD_COST_TAG = "CardCost";
 }

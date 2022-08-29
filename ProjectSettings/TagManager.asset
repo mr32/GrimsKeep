@@ -11,6 +11,11 @@ TagManager:
   - CardName
   - CardFlairText
   - CardPower
+  - PlayerStats
+  - PlayerHealthTag
+  - PlayerManaTag
+  - CardCost
+  - CardDefense
   layers:
   - Default
   - TransparentFX
