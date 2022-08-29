@@ -17,5 +17,14 @@ public class CardInfo : CardAction
 
     public CardType cardType;
     public List<string> allowedToBePlayedOn = new List<string>();
-    
+
+    public override bool CanPlayCard(GameObject gameObjectPlayedOn)
+    {
+        return (int)cardCost <= GameObject.FindGameObjectWithTag(Constants.PLAYER_STAT_GAMEOBJECT_TAG).GetComponent<PlayerStats>().playerMana;
+    }
+
+    public override bool CanPlayCard()
+    {
+        return (int)cardCost <= GameObject.FindGameObjectWithTag(Constants.PLAYER_STAT_GAMEOBJECT_TAG).GetComponent<PlayerStats>().playerMana;
+    }
 }

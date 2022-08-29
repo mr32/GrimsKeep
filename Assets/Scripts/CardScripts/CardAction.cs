@@ -5,7 +5,7 @@ using UnityEngine;
 public class CardAction : MonoBehaviour
 {
     public virtual bool PlayCard(string playedOn, GameObject gameObjectPlayedOn, CardInfo cardPlayed){
-        if(!CanPlayCard(gameObjectPlayedOn, cardPlayed)){
+        if(!CanPlayCard(gameObjectPlayedOn)){
             return false;
         }
         CardRules(gameObjectPlayedOn);
@@ -15,10 +15,11 @@ public class CardAction : MonoBehaviour
         return true;
     }
 
-    // Will return true if the card cost is less than or equal to playerMana
-    public virtual bool CanPlayCard(GameObject gameObjectPlayedOn, CardInfo cardPlayed){
-        return (int)cardPlayed.cardCost <= GameObject.FindGameObjectWithTag(Constants.PLAYER_STAT_GAMEOBJECT_TAG).GetComponent<PlayerStats>().playerMana;
+    public virtual bool CanPlayCard(GameObject gameObjectPlayedOn){
+        return false;
     }
+
+    public virtual bool CanPlayCard() { return false; }
 
     public virtual void CardRules(GameObject gameObjectPlayedOn){}
 }

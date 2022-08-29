@@ -27,7 +27,7 @@ public class CardMovement : HoverableObject
 
     void Update()
     {
-        if (mouseOnObject && !gameController.cardBeingPlayed && Input.GetMouseButtonDown(0))
+        if (mouseOnObject && !gameController.cardBeingPlayed && this.gameObject.GetComponent<CardInfo>().CanPlayCard() && Input.GetMouseButtonDown(0))
         {
             gameController.cardBeingPlayed = true;
             gameController.activeCard = this.gameObject;
@@ -50,7 +50,6 @@ public class CardMovement : HoverableObject
         // Only Destroy card if it isnt the active card being played
         if (!GameObject.ReferenceEquals( gameController.activeCard, this.gameObject)){
             Destroy(cardCopy);
-            // ReturnCardToHand();
         }
     }
 
