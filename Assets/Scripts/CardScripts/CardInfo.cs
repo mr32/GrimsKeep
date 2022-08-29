@@ -20,7 +20,7 @@ public class CardInfo : CardAction
 
     public override bool CanPlayCard(GameObject gameObjectPlayedOn)
     {
-        return (int)cardCost <= GameObject.FindGameObjectWithTag(Constants.PLAYER_STAT_GAMEOBJECT_TAG).GetComponent<PlayerStats>().playerMana;
+        return CanPlayCard();
     }
 
     public override bool CanPlayCard()

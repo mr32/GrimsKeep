@@ -15,9 +15,7 @@ public class CardAction : MonoBehaviour
         return true;
     }
 
-    public virtual bool CanPlayCard(GameObject gameObjectPlayedOn){
-        return false;
-    }
+    public virtual bool CanPlayCard(GameObject gameObjectPlayedOn){ return false; }
 
     public virtual bool CanPlayCard() { return false; }
 
