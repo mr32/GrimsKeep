@@ -16,6 +16,8 @@ TagManager:
   - PlayerManaTag
   - CardCost
   - CardDefense
+  - BattleSquarePreview
+  - BattleSquareContentPane
   layers:
   - Default
   - TransparentFX
