@@ -18,16 +18,22 @@ public class BattleSquare : HoverableObject
     public GameObject battleSquarePreviewContentPane;
     public bool battleSquareClicked;
 
+    void Awake()
+    {
+        battleSquarePreviewPanel = GameObject.FindGameObjectWithTag(Constants.BATTLE_SQUARE_PREVIEW_PANE_TAG);
+        battleSquarePreviewContentPane = GameObject.FindGameObjectWithTag(Constants.BATTLE_SQUARE_PREVIEW_CONTENT_PANE_TAG);
+    }
+
     void Start(){
         gameController = GameObject.FindGameObjectWithTag(Constants.GAME_CONTROLLER_TAG).GetComponent<GameController>();
         orderInColumn = this.transform.GetSiblingIndex();
-        battleSquarePreviewPanel = GameObject.FindGameObjectWithTag(Constants.BATTLE_SQUARE_PREVIEW_PANE_TAG);
-        battleSquarePreviewContentPane = GameObject.FindGameObjectWithTag(Constants.BATTLE_SQUARE_PREVIEW_CONTENT_PANE_TAG);
-        
+
+        battleSquarePreviewPanel.SetActive(false);
+
         // if(battleSquarePreviewPanel.activeSelf){
         //     battleSquarePreviewPanel.SetActive(false);
         // }
-        
+
     }
 
     void Update(){
