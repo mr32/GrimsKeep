@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpellCard : CardInfo
+public abstract class SpellCard : CardInfo
 {
     public uint creatureModifierAmount = 0;
     public SpellCard(){

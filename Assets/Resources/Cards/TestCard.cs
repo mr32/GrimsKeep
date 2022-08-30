@@ -28,11 +28,11 @@ public class TestCard : CreatureCard
         }
     }
 
-    public override bool CanPlayCard(GameObject gameObjectPlayedOn)
+    public override bool CanPlayCardOnObject(GameObject gameObjectPlayedOn)
     {
         if(gameObjectPlayedOn.GetComponent<BattleSquare>().IsCreatureOnSquare()){
             return false;
         }
-        return base.CanPlayCard(gameObjectPlayedOn);
+        return HasEnoughMana();
     }
 }

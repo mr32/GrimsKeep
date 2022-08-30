@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CreatureCard : CardInfo
+public abstract class CreatureCard : CardInfo
 {
     public uint baseCreaturePower;
     public uint baseCreatureDefense;

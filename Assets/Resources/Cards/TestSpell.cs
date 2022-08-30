@@ -23,8 +23,8 @@ public class TestSpell : SpellCard
         creatureCard.additionalPowerModifier += creatureModifierAmount;
     }
 
-    public override bool CanPlayCard(GameObject gameObjectPlayedOn)
+    public override bool CanPlayCardOnObject(GameObject gameObjectPlayedOn)
     {
-        return base.CanPlayCard(gameObjectPlayedOn) && gameObjectPlayedOn.GetComponent<BattleSquare>().IsCreatureOnSquare();
+        return HasEnoughMana() && gameObjectPlayedOn.GetComponent<BattleSquare>().IsCreatureOnSquare();
     }
 }

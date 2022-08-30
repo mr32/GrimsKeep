@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardAction : MonoBehaviour
+public abstract class CardAction : MonoBehaviour
 {
     public virtual bool PlayCard(string playedOn, GameObject gameObjectPlayedOn, CardInfo cardPlayed){
-        if(!CanPlayCard(gameObjectPlayedOn)){
+        if(!CanPlayCardOnObject(gameObjectPlayedOn)){
             return false;
         }
         CardRules(gameObjectPlayedOn);
@@ -15,9 +15,6 @@ public class CardAction : MonoBehaviour
         return true;
     }
 
-    public virtual bool CanPlayCard(GameObject gameObjectPlayedOn){ return false; }
-
-    public virtual bool CanPlayCard() { return false; }
-
-    public virtual void CardRules(GameObject gameObjectPlayedOn){}
+    public abstract bool CanPlayCardOnObject(GameObject gameObjectPlayedOn);
+    public abstract void CardRules(GameObject gameObjectPlayedOn);
 }

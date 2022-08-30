@@ -87,4 +87,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5502ead9b688ae34484590b0ead4946a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCardBeingPlayed: 0
+  orderInColumn: 0
+  battlePaneStats: {fileID: 0}
+  cardPrefab: {fileID: 2377617882301758325, guid: 3476692678d6ec245a903654709d9628,
+    type: 3}

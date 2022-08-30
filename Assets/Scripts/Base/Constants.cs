@@ -14,6 +14,8 @@ public static class Constants
     public static string PLAYER_STAT_GAMEOBJECT_TAG = "PlayerStats";
 
     public static string BATTLE_SQUARE_ID = "BattleSquare";
+    public static string BATTLE_SQUARE_PREVIEW_PANE_TAG = "BattleSquarePreview";
+    public static string BATTLE_SQUARE_PREVIEW_CONTENT_PANE_TAG = "BattleSquareContentPane";
     public static string CARD_INFO_ID = "CardInfo";
 }
 

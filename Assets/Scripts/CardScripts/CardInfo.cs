@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardInfo : CardAction
+public abstract class CardInfo : CardAction
 {
     public string cardName;
     public string cardDescription;
@@ -18,12 +18,7 @@ public class CardInfo : CardAction
     public CardType cardType;
     public List<string> allowedToBePlayedOn = new List<string>();
 
-    public override bool CanPlayCard(GameObject gameObjectPlayedOn)
-    {
-        return CanPlayCard();
-    }
-
-    public override bool CanPlayCard()
+    public bool HasEnoughMana()
     {
         return (int)cardCost <= GameObject.FindGameObjectWithTag(Constants.PLAYER_STAT_GAMEOBJECT_TAG).GetComponent<PlayerStats>().playerMana;
     }

@@ -27,7 +27,7 @@ public class CardMovement : HoverableObject
 
     void Update()
     {
-        if (mouseOnObject && !gameController.cardBeingPlayed && this.gameObject.GetComponent<CardInfo>().CanPlayCard() && Input.GetMouseButtonDown(0))
+        if (mouseOnObject && !gameController.cardBeingPlayed && this.gameObject.GetComponent<CardInfo>().HasEnoughMana() && Input.GetMouseButtonDown(0))
         {
             gameController.cardBeingPlayed = true;
             gameController.activeCard = this.gameObject;
