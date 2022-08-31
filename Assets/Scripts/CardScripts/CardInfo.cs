@@ -8,6 +8,7 @@ public abstract class CardInfo : CardAction
     public string cardDescription;
     public uint cardCost;
     public bool cardCopied = false;
+    public bool cardModified = false;
 
     public enum CardType {
         SPELL,

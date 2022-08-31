@@ -29,6 +29,10 @@ public class CardGraphics : MonoBehaviour
         if(cardInfo.cardType == CardInfo.CardType.MONSTER){
             CreatureCard creatureCard = (CreatureCard) cardInfo;
             cardPowerGraphic.GetComponentInChildren<Text>().text = creatureCard.baseCreaturePower.ToString();
+            if(cardInfo.cardModified){
+                cardPowerGraphic.GetComponentInChildren<Text>().text = creatureCard.GetTotalPowerTotal().ToString();
+                cardPowerGraphic.GetComponentInChildren<Text>().color = Color.green;
+            }
         }
 
         if(cardInfo.cardType == CardInfo.CardType.SPELL || cardInfo.cardType == CardInfo.CardType.CREATURE_MODIFIER){

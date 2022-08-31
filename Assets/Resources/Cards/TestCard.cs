@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TestCard : CreatureCard
 {
     private uint modifyAmount = 3;
+    public CardGraphics cardGraphics;
     void Awake(){
         cardName = "Test Card A";
         cardDescription = $"If the card is in the front\nit will get a power boost of {modifyAmount}";
@@ -25,6 +27,7 @@ public class TestCard : CreatureCard
     {
         if(gameObjectPlayedOn.transform.GetSiblingIndex() == 0){
             powerModifier = modifyAmount;
+            cardModified = true;
         }
     }
 

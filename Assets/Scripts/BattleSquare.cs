@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Linq;
+using System.Reflection;
 
 public class BattleSquare : HoverableObject
 {
@@ -13,7 +14,6 @@ public class BattleSquare : HoverableObject
     public BattlePaneStats battlePaneStats;
 
     public GameObject cardPrefab;
-    private List<GameObject> cardsPreviewedOnHover = new List<GameObject>();
     public GameObject battleSquarePreviewPanel;
     public GameObject battleSquarePreviewContentPane;
     public bool battleSquareClicked;
@@ -29,18 +29,16 @@ public class BattleSquare : HoverableObject
         orderInColumn = this.transform.GetSiblingIndex();
 
         battleSquarePreviewPanel.SetActive(false);
-
-        // if(battleSquarePreviewPanel.activeSelf){
-        //     battleSquarePreviewPanel.SetActive(false);
-        // }
-
     }
 
     void Update(){
-
         if(mouseOnObject && Input.GetMouseButtonDown(0)){
             if(!gameController.cardBeingPlayed){
                 battleSquareClicked = !battleSquareClicked;
+                if(battleSquarePreviewPanel.activeSelf){
+                    DestroyCardPreview();
+                }
+                ShowOrHideCardPanel(battleSquareClicked);
             }else{
                 currentCard = gameController.activeCard.GetComponent<CardInfo>();
 
@@ -49,14 +47,6 @@ public class BattleSquare : HoverableObject
                     PlayCardOnSquare();
                 }
             }
-        }
-
-        if(battleSquareClicked){
-            ShowCardsPlayedOnSquare();
-        }
-        else
-        {
-            DestroyCardPreview();
         }
     }
 
@@ -67,14 +57,12 @@ public class BattleSquare : HoverableObject
     public override void OnPointerEnter(PointerEventData eventData)
     {
         base.OnPointerEnter(eventData);
-        ShowCardsPlayedOnSquare();
         gameController.battleSquareToPlayOn = this.gameObject;
     }
 
     public override void OnPointerExit(PointerEventData eventData)
     {
         base.OnPointerExit(eventData);
-        DestroyCardPreview();
         gameController.battleSquareToPlayOn = null;
     }
 
@@ -88,6 +76,10 @@ public class BattleSquare : HoverableObject
     
         // send request to update battlepanestats
         battlePaneStats.UpdateGraphics(this.gameObject.transform.parent);
+
+        if(battleSquareClicked){
+            ShowCardsPlayedOnSquare();
+        }
 
         gameController.CleanController();
         currentCard = null;
@@ -116,6 +108,14 @@ public class BattleSquare : HoverableObject
         UnityEditorInternal.ComponentUtility.PasteComponentAsNew(this.gameObject);
     }
 
+    private void ShowOrHideCardPanel(bool show){
+        if(show){
+            ShowCardsPlayedOnSquare();
+        }else{
+            DestroyCardPreview();
+        }
+    }
+
     private void ShowCardsPlayedOnSquare(){
         CardInfo[] cardsOnSquare = GetCardsPlayedOnSquare();
 
@@ -124,21 +124,33 @@ public class BattleSquare : HoverableObject
         }
         
         foreach(CardInfo cardInfo in cardsOnSquare){
+            CardInfo cardInfoCopy = cardInfo;
+            cardInfoCopy.cardCopied = false;
             GameObject card = Instantiate(cardPrefab);
             card.transform.SetParent(battleSquarePreviewContentPane.transform);
             card.transform.localScale = new Vector3(1f, 1f, 1f);
             card.GetComponent<CardMovement>().enabled = false;
             card.AddComponent(cardInfo.GetType());
-            cardsPreviewedOnHover.Add(card);
+            CopyClassValues(cardInfoCopy, card.GetComponent<CardInfo>());
         }
     }
 
     private void DestroyCardPreview(){
-        if(cardsPreviewedOnHover.Count > 0){
-            foreach(GameObject card in cardsPreviewedOnHover){
-                Destroy(card);
-            }
-            battleSquarePreviewPanel.SetActive(false);
+        foreach (Transform child in battleSquarePreviewContentPane.transform) {
+            GameObject.Destroy(child.gameObject);
+        }
+        battleSquarePreviewPanel.SetActive(false);
+        battleSquareClicked = false;
+    }
+
+    private void CopyClassValues(CardInfo sourceComp, CardInfo targetComp) {
+        FieldInfo[] sourceFields = sourceComp.GetType().GetFields(BindingFlags.Public | 
+                                                    BindingFlags.NonPublic | 
+                                                    BindingFlags.Instance);
+        int i = 0;
+        for(i = 0; i < sourceFields.Length; i++) {
+            var value = sourceFields[i].GetValue(sourceComp);
+            sourceFields[i].SetValue(targetComp, value);
         }
     }
 }

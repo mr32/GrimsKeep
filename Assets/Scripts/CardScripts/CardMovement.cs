@@ -38,8 +38,8 @@ public class CardMovement : HoverableObject
     {
         base.OnPointerEnter(eventData);
         this.gameObject.GetComponent<Outline>().enabled = true;
-
-        ShowCardPreviewFromHand();
+        if(!gameController.cardBeingPlayed)
+            ShowCardPreviewFromHand();
     }
 
     public override void OnPointerExit(PointerEventData eventData)
