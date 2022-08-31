@@ -14,9 +14,9 @@ public class BattleSquare : HoverableObject
     public BattlePaneStats battlePaneStats;
 
     public GameObject cardPrefab;
-    public GameObject battleSquarePreviewPanel;
-    public GameObject battleSquarePreviewContentPane;
-    public bool battleSquareClicked;
+    private GameObject battleSquarePreviewPanel;
+    private GameObject battleSquarePreviewContentPane;
+    private bool battleSquareClicked;
 
     void Awake()
     {
