@@ -16,12 +16,22 @@ public class BattleSquare : HoverableObject
     public GameObject cardPrefab;
     private GameObject battleSquarePreviewPanel;
     private GameObject battleSquarePreviewContentPane;
+    private GameObject battleSquareAttackGraphic;
+    private GameObject battleSquareDefenseGraphic;
     private bool battleSquareClicked;
 
     void Awake()
     {
         battleSquarePreviewPanel = GameObject.FindGameObjectWithTag(Constants.BATTLE_SQUARE_PREVIEW_PANE_TAG);
         battleSquarePreviewContentPane = GameObject.FindGameObjectWithTag(Constants.BATTLE_SQUARE_PREVIEW_CONTENT_PANE_TAG);
+
+        
+        battleSquareAttackGraphic = Utils.FindChildWithTag(this.gameObject, Constants.BATTLE_SQUARE_ATTACK_GRAPHIC_TAG);
+        battleSquareDefenseGraphic = Utils.FindChildWithTag(this.gameObject, Constants.BATTLE_SQUARE_DEFENSE_GRAPHIC_TAG);
+
+        battleSquareAttackGraphic.SetActive(false);
+        battleSquareDefenseGraphic.SetActive(false);
+
     }
 
     void Start(){
@@ -48,6 +58,7 @@ public class BattleSquare : HoverableObject
                 if(currentCard.CanPlayCardOnObject(this.gameObject)){
                     this.gameObject.GetComponent<Image>().color = Color.red;
                     PlayCardOnSquare();
+                    UpdateAttackAndDefenseGraphics();
                 }
             }
         }
@@ -76,6 +87,7 @@ public class BattleSquare : HoverableObject
         
         
         // update battle square graphics here
+        
     
         // send request to update battlepanestats
         // battlePaneStats.UpdateGraphics(this.gameObject.transform.parent);
@@ -95,6 +107,17 @@ public class BattleSquare : HoverableObject
             cardInfo.enabled = true;
         }
         return cardsPlayedOnSquare;
+    }
+
+    public uint CalculateSquarePowerTotals()
+    {
+        uint total = 0;
+        CardInfo[] creatureList = GetCardsPlayedOnSquare().Where(card => card.cardType == CardInfo.CardType.MONSTER).ToArray();
+        foreach(CreatureCard creatureCard in creatureList)
+        {
+            total += creatureCard.GetTotalPowerTotal();
+        }
+        return total;
     }
 
     public bool IsCreatureOnSquare(){
@@ -155,5 +178,16 @@ public class BattleSquare : HoverableObject
             var value = sourceFields[i].GetValue(sourceComp);
             sourceFields[i].SetValue(targetComp, value);
         }
+    }
+
+    private void UpdateAttackAndDefenseGraphics()
+    {
+        battleSquareAttackGraphic.SetActive(true);
+        battleSquareDefenseGraphic.SetActive(true);
+
+        battleSquareAttackGraphic.GetComponentInChildren<Text>().text = CalculateSquarePowerTotals().ToString();
+
+        // TODO: Calculate correct defense total
+        battleSquareDefenseGraphic.GetComponentInChildren<Text>().text = 0.ToString();
     }
 }

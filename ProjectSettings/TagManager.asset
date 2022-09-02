@@ -18,6 +18,8 @@ TagManager:
   - CardDefense
   - BattleSquarePreview
   - BattleSquareContentPane
+  - BattleSquareAttack
+  - BattleSquareDefense
   layers:
   - Default
   - TransparentFX
