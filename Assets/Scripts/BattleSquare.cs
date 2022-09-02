@@ -109,10 +109,15 @@ public class BattleSquare : HoverableObject
         return cardsPlayedOnSquare;
     }
 
+    public CardInfo[] GetCreatureCardsPlayedOnSquare()
+    {
+        return GetCardsPlayedOnSquare().Where(card => card.cardType == CardInfo.CardType.MONSTER).ToArray();
+    }
+
     public uint CalculateSquarePowerTotals()
     {
         uint total = 0;
-        CardInfo[] creatureList = GetCardsPlayedOnSquare().Where(card => card.cardType == CardInfo.CardType.MONSTER).ToArray();
+        CardInfo[] creatureList = GetCreatureCardsPlayedOnSquare();
         foreach(CreatureCard creatureCard in creatureList)
         {
             total += creatureCard.GetTotalPowerTotal();
@@ -180,12 +185,22 @@ public class BattleSquare : HoverableObject
         }
     }
 
+    private bool AnyCreatureModifiedOnSquare()
+    {
+        return GetCreatureCardsPlayedOnSquare().Where(cardType => cardType.cardModified).ToArray().Length > 0;
+    }
+
     private void UpdateAttackAndDefenseGraphics()
     {
         battleSquareAttackGraphic.SetActive(true);
         battleSquareDefenseGraphic.SetActive(true);
 
         battleSquareAttackGraphic.GetComponentInChildren<Text>().text = CalculateSquarePowerTotals().ToString();
+
+        if (AnyCreatureModifiedOnSquare())
+        {
+            battleSquareAttackGraphic.GetComponentInChildren<Text>().color = Color.green;
+        }
 
         // TODO: Calculate correct defense total
         battleSquareDefenseGraphic.GetComponentInChildren<Text>().text = 0.ToString();
