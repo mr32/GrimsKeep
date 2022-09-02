@@ -33,6 +33,9 @@ public class BattleSquare : HoverableObject
 
     void Update(){
         if(mouseOnObject && Input.GetMouseButtonDown(0)){
+            int col = this.gameObject.transform.GetSiblingIndex() % 5;
+            int row = this.gameObject.transform.GetSiblingIndex() / 5;
+            Debug.Log("Row: " + row.ToString() + "\nCol: " + col.ToString());
             if(!gameController.cardBeingPlayed){
                 battleSquareClicked = !battleSquareClicked;
                 if(battleSquarePreviewPanel.activeSelf){
@@ -75,7 +78,7 @@ public class BattleSquare : HoverableObject
         // update battle square graphics here
     
         // send request to update battlepanestats
-        battlePaneStats.UpdateGraphics(this.gameObject.transform.parent);
+        // battlePaneStats.UpdateGraphics(this.gameObject.transform.parent);
 
         if(battleSquareClicked){
             ShowCardsPlayedOnSquare();
