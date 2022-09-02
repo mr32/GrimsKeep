@@ -187,7 +187,7 @@ public class BattleSquare : HoverableObject
 
     private bool AnyCreatureModifiedOnSquare()
     {
-        return GetCreatureCardsPlayedOnSquare().Where(cardType => cardType.cardModified).ToArray().Length > 0;
+        return GetCreatureCardsPlayedOnSquare().Where(cardType => cardType.cardModified == true).ToArray().Length > 0;
     }
 
     private void UpdateAttackAndDefenseGraphics()
