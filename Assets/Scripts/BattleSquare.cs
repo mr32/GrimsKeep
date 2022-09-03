@@ -10,6 +10,10 @@ public class BattleSquare : HoverableObject
 {
     private GameController gameController;
     public int orderInColumn;
+
+    public int row;
+    public int col;
+
     private CardInfo currentCard;
     public BattlePaneStats battlePaneStats;
 
@@ -32,6 +36,9 @@ public class BattleSquare : HoverableObject
         battleSquareAttackGraphic.SetActive(false);
         battleSquareDefenseGraphic.SetActive(false);
 
+        row = this.gameObject.transform.GetSiblingIndex() / Constants.BOARD_WIDTH;
+        col = this.gameObject.transform.GetSiblingIndex() % Constants.BOARD_WIDTH;
+
     }
 
     void Start(){
@@ -43,9 +50,6 @@ public class BattleSquare : HoverableObject
 
     void Update(){
         if(mouseOnObject && Input.GetMouseButtonDown(0)){
-            int col = this.gameObject.transform.GetSiblingIndex() % 5;
-            int row = this.gameObject.transform.GetSiblingIndex() / 5;
-            Debug.Log("Row: " + row.ToString() + "\nCol: " + col.ToString());
             if(!gameController.cardBeingPlayed){
                 battleSquareClicked = !battleSquareClicked;
                 if(battleSquarePreviewPanel.activeSelf){

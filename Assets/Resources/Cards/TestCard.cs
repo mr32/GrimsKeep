@@ -25,7 +25,10 @@ public class TestCard : CreatureCard
 
     public override void CardRules(GameObject gameObjectPlayedOn)
     {
-        if(gameObjectPlayedOn.transform.GetSiblingIndex() == 0){
+        BattleSquare battleSquare = gameObjectPlayedOn.GetComponent<BattleSquare>();
+
+        if(battleSquare != null && battleSquare.col == 0)
+        {
             powerModifier = modifyAmount;
             cardModified = true;
         }
