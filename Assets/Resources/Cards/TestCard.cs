@@ -7,12 +7,30 @@ public class TestCard : CreatureCard
 {
     private uint modifyAmount = 3;
     public CardGraphics cardGraphics;
-    void Awake(){
-        cardName = "Test Card A";
-        cardDescription = $"If the card is in the front\nit will get a power boost of {modifyAmount}";
-        baseCreaturePower = 5;
-        cardCost = 3;
 
+    public override MoveDirections[] moveDirections { 
+        get{ 
+            return new MoveDirections[]{ 
+                MoveDirections.UP, 
+                //MoveDirections.DOWN, 
+                //MoveDirections.TOP_LEFT, 
+                //MoveDirections.LEFT, 
+                //MoveDirections.RIGHT, 
+                //MoveDirections.TOP_RIGHT, 
+                //MoveDirections.BOTTOM_RIGHT,
+                //MoveDirections.BOTTOM_LEFT
+            }; 
+        }
+    }
+
+    public override string CardName => "Test Card A";
+    public override string CardDescription => $"If the card is in the front\nit will get a power boost of {modifyAmount}";
+    public override uint baseCreaturePower => 5;
+    public override uint baseCreatureDefense => 3;
+    public override string CardFlair => "LARGE CREATURE";
+    public override uint CardCost { get => 3; set => cardCost = value; }
+
+    void Awake(){
         allowedToBePlayedOn.Add(
             Constants.BATTLE_SQUARE_ID
         );

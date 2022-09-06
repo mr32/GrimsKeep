@@ -4,11 +4,15 @@ using UnityEngine;
 
 public abstract class CardInfo : CardAction
 {
-    public string cardName;
-    public string cardDescription;
-    public uint cardCost;
+    public abstract string CardName { get; }
+    public abstract string CardDescription { get; }
+    public abstract uint CardCost { get; set; }
+
+    public abstract string CardFlair { get; }
+
     public bool cardCopied = false;
     public bool cardModified = false;
+    protected uint cardCost;
 
     public enum CardType {
         SPELL,
@@ -21,6 +25,6 @@ public abstract class CardInfo : CardAction
 
     public bool HasEnoughMana()
     {
-        return (int)cardCost <= GameObject.FindGameObjectWithTag(Constants.PLAYER_STAT_GAMEOBJECT_TAG).GetComponent<PlayerStats>().playerMana;
+        return (int)CardCost <= GameObject.FindGameObjectWithTag(Constants.PLAYER_STAT_GAMEOBJECT_TAG).GetComponent<PlayerStats>().playerMana;
     }
 }

@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class TestSpell : SpellCard
 {
+    public override string CardName => "Test Spell";
+    public override string CardDescription => $"Add {creatureModifierAmount} to target Creature";
+    public override uint CardCost { get => 1; set => cardCost = value; }
+    public override string CardFlair => "Cool Test Spell!";
     void Awake() {
-        cardName = "Test Spell";
         creatureModifierAmount = 5;
-        cardDescription = $"Add {creatureModifierAmount} to target Creature";
-        cardCost = 1;
         cardType = CardType.CREATURE_MODIFIER;
     }
     void Start(){

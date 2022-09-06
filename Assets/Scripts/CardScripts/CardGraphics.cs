@@ -22,9 +22,10 @@ public class CardGraphics : MonoBehaviour
     }
 
     public void SetCardGraphics(CardInfo cardInfo){
-        cardNameGraphic.GetComponentInChildren<Text>().text = cardInfo.cardName;
-        cardDescGraphic.GetComponentInChildren<Text>().text = cardInfo.cardDescription;
-        cardCostGraphic.GetComponentInChildren<Text>().text = cardInfo.cardCost.ToString();
+        cardNameGraphic.GetComponentInChildren<Text>().text = cardInfo.CardName;
+        cardDescGraphic.GetComponentInChildren<Text>().text = cardInfo.CardDescription;
+        cardCostGraphic.GetComponentInChildren<Text>().text = cardInfo.CardCost.ToString();
+        cardFlairGraphic.GetComponentInChildren<Text>().text = cardInfo.CardFlair;
         
         if(cardInfo.cardType == CardInfo.CardType.MONSTER){
             CreatureCard creatureCard = (CreatureCard) cardInfo;

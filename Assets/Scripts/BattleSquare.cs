@@ -22,12 +22,19 @@ public class BattleSquare : HoverableObject
     private GameObject battleSquarePreviewContentPane;
     private GameObject battleSquareAttackGraphic;
     private GameObject battleSquareDefenseGraphic;
+
+    private GameObject battlePlaySquare;
+    private Color originalColor;
     private bool battleSquareClicked;
+    private List<int> moveSquareIndiciesColored = new List<int>();
 
     void Awake()
     {
         battleSquarePreviewPanel = GameObject.FindGameObjectWithTag(Constants.BATTLE_SQUARE_PREVIEW_PANE_TAG);
         battleSquarePreviewContentPane = GameObject.FindGameObjectWithTag(Constants.BATTLE_SQUARE_PREVIEW_CONTENT_PANE_TAG);
+        originalColor = this.GetComponent<Image>().color;
+
+        battlePlaySquare = this.gameObject.transform.parent.gameObject;
 
         
         battleSquareAttackGraphic = Utils.FindChildWithTag(this.gameObject, Constants.BATTLE_SQUARE_ATTACK_GRAPHIC_TAG);
@@ -39,6 +46,9 @@ public class BattleSquare : HoverableObject
         row = this.gameObject.transform.GetSiblingIndex() / Constants.BOARD_WIDTH;
         col = this.gameObject.transform.GetSiblingIndex() % Constants.BOARD_WIDTH;
 
+        // To get child sibling index
+        // i = row * Constants.BOARD_WIDTH + col
+
     }
 
     void Start(){
@@ -49,22 +59,48 @@ public class BattleSquare : HoverableObject
     }
 
     void Update(){
+        
         if(mouseOnObject && Input.GetMouseButtonDown(0)){
-            if(!gameController.cardBeingPlayed){
-                battleSquareClicked = !battleSquareClicked;
-                if(battleSquarePreviewPanel.activeSelf){
-                    DestroyCardPreview();
-                }
-                ShowOrHideCardPanel(battleSquareClicked);
-            }else{
+            //if(!gameController.cardBeingPlayed){
+            //    battleSquareClicked = !battleSquareClicked;
+            //    if(battleSquarePreviewPanel.activeSelf){
+            //        DestroyCardPreview();
+            //    }
+            //    ShowOrHideCardPanel(battleSquareClicked);
+            //}else{
+            //    currentCard = gameController.activeCard.GetComponent<CardInfo>();
+
+            //    if(currentCard.CanPlayCardOnObject(this.gameObject)){
+            //        this.gameObject.GetComponent<Image>().color = Color.red;
+            //        PlayCardOnSquare();
+            //        UpdateAttackAndDefenseGraphics();
+            //    }
+            //}
+
+            if (gameController.cardBeingPlayed)
+            {
                 currentCard = gameController.activeCard.GetComponent<CardInfo>();
 
-                if(currentCard.CanPlayCardOnObject(this.gameObject)){
+                if (currentCard.CanPlayCardOnObject(this.gameObject))
+                {
                     this.gameObject.GetComponent<Image>().color = Color.red;
                     PlayCardOnSquare();
                     UpdateAttackAndDefenseGraphics();
                 }
             }
+            else
+            {
+                HashSet<CreatureCard.MoveDirections> moveDirections = new HashSet<CreatureCard.MoveDirections>();
+                foreach(CreatureCard creatureCard in GetCreatureCardsPlayedOnSquare())
+                {
+                    foreach (var val in creatureCard.moveDirections)
+                    {
+                        moveDirections.Add(val);
+                    }
+                }
+                LightUpMoveSquares(moveDirections.ToArray());
+            }
+            
         }
     }
 
@@ -111,6 +147,99 @@ public class BattleSquare : HoverableObject
             cardInfo.enabled = true;
         }
         return cardsPlayedOnSquare;
+    }
+
+    private int CalculateSiblingIndex(int x, int y)
+    {
+        return x * Constants.BOARD_WIDTH + y;
+    }
+
+    private void LightUpMoveSquares(CreatureCard.MoveDirections[] possibleMoveDirections)
+    {
+        foreach(CreatureCard.MoveDirections move in possibleMoveDirections)
+        {
+            switch (move)
+            {
+                case CreatureCard.MoveDirections.UP:
+                    if(IsValidBoardSquare(row - 1, col))
+                    {
+                        ColorSquare(CalculateSiblingIndex(row - 1, col), Color.green);
+                        // Should probably add this logic to the overall board (parent of this)
+                        moveSquareIndiciesColored.Add(CalculateSiblingIndex(row - 1, col));
+                    }
+                    break;
+                case CreatureCard.MoveDirections.DOWN:
+                    if (IsValidBoardSquare(row + 1, col))
+                    {
+                        ColorSquare(CalculateSiblingIndex(row + 1, col), Color.green);
+                        moveSquareIndiciesColored.Add(CalculateSiblingIndex(row + 1, col));
+                    }
+                    break;
+                case CreatureCard.MoveDirections.LEFT:
+                    if (IsValidBoardSquare(row, col - 1))
+                    {
+                        ColorSquare(CalculateSiblingIndex(row, col - 1), Color.green);
+                        moveSquareIndiciesColored.Add(CalculateSiblingIndex(row, col - 1));
+                    }
+                    break;
+                case CreatureCard.MoveDirections.RIGHT:
+                    if (IsValidBoardSquare(row, col + 1))
+                    {
+                        ColorSquare(CalculateSiblingIndex(row, col + 1), Color.green);
+                        moveSquareIndiciesColored.Add(CalculateSiblingIndex(row, col + 1));
+                    }
+                    break;
+                case CreatureCard.MoveDirections.TOP_LEFT:
+                    if (IsValidBoardSquare(row - 1, col - 1))
+                    {
+                        ColorSquare(CalculateSiblingIndex(row - 1, col - 1), Color.green);
+                        moveSquareIndiciesColored.Add(CalculateSiblingIndex(row - 1, col - 1));
+                    }
+                    break;
+                case CreatureCard.MoveDirections.TOP_RIGHT:
+                    if (IsValidBoardSquare(row - 1, col + 1))
+                    {
+                        ColorSquare(CalculateSiblingIndex(row - 1, col + 1), Color.green);
+                        moveSquareIndiciesColored.Add(CalculateSiblingIndex(row - 1, col + 1));
+                    }
+                    break;
+                case CreatureCard.MoveDirections.BOTTOM_LEFT:
+                    if (IsValidBoardSquare(row + 1, col - 1))
+                    {
+                        ColorSquare(CalculateSiblingIndex(row + 1, col - 1), Color.green);
+                        moveSquareIndiciesColored.Add(CalculateSiblingIndex(row + 1, col - 1));
+                    }
+                    break;
+                case CreatureCard.MoveDirections.BOTTOM_RIGHT:
+                    if (IsValidBoardSquare(row + 1, col + 1))
+                    {
+                        ColorSquare(CalculateSiblingIndex(row + 1, col + 1), Color.green);
+                        moveSquareIndiciesColored.Add(CalculateSiblingIndex(row + 1, col + 1));
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    private void ColorSquare(int siblingIndex, Color color)
+    {
+        Transform battleSquare = battlePlaySquare.transform.GetChild(siblingIndex);
+
+        if (battleSquare)
+        {
+            battleSquare.GetComponent<Image>().color = color;
+        }
+    }
+
+    private bool IsValidBoardSquare(int row, int col)
+    {
+        if(row >= 0 && col >= 0 && row < Constants.BOARD_WIDTH && col < Constants.BOARD_WIDTH)
+        {
+            return true;
+        }
+        return false;
     }
 
     public CardInfo[] GetCreatureCardsPlayedOnSquare()
