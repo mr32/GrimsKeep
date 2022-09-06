@@ -27,10 +27,10 @@ public class CardMovement : HoverableObject
 
     void Update()
     {
-        if (mouseOnObject && !gameController.cardBeingPlayed && this.gameObject.GetComponent<CardInfo>().HasEnoughMana() && Input.GetMouseButtonDown(0))
+        if (mouseOnObject && !gameController.objectBeingPlayed && this.gameObject.GetComponent<CardInfo>().HasEnoughMana() && Input.GetMouseButtonDown(0))
         {
-            gameController.cardBeingPlayed = true;
-            gameController.activeCard = this.gameObject;
+            gameController.objectBeingPlayed = true;
+            gameController.activeObject = this.gameObject;
         }
     }
 
@@ -38,7 +38,7 @@ public class CardMovement : HoverableObject
     {
         base.OnPointerEnter(eventData);
         this.gameObject.GetComponent<Outline>().enabled = true;
-        if(!gameController.cardBeingPlayed)
+        if(!gameController.objectBeingPlayed)
             ShowCardPreviewFromHand();
     }
 
@@ -48,7 +48,7 @@ public class CardMovement : HoverableObject
         this.gameObject.GetComponent<Outline>().enabled = false;
         
         // Only Destroy card if it isnt the active card being played
-        if (!GameObject.ReferenceEquals( gameController.activeCard, this.gameObject)){
+        if (!GameObject.ReferenceEquals( gameController.activeObject, this.gameObject)){
             Destroy(cardCopy);
         }
     }

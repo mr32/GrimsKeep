@@ -17,6 +17,7 @@ public static class Constants
     public static string BATTLE_SQUARE_ATTACK_GRAPHIC_TAG = "BattleSquareAttack";
     public static string BATTLE_SQUARE_DEFENSE_GRAPHIC_TAG = "BattleSquareDefense";
 
+
     public static string BATTLE_SQUARE_PREVIEW_PANE_TAG = "BattleSquarePreview";
     public static string BATTLE_SQUARE_PREVIEW_CONTENT_PANE_TAG = "BattleSquareContentPane";
     public static string CARD_INFO_ID = "CardInfo";

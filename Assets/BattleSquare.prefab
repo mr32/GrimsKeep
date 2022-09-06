@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 1306263024335773839}
   m_Layer: 5
   m_Name: BattleSquare
-  m_TagString: Untagged
+  m_TagString: BattleSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -168,6 +168,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orderInColumn: 0
+  row: 0
+  col: 0
   battlePaneStats: {fileID: 0}
   cardPrefab: {fileID: 2377617882301758325, guid: 3476692678d6ec245a903654709d9628,
     type: 3}

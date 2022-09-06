@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    public bool cardBeingPlayed = false;
-    public GameObject activeCard;
+    public bool objectBeingPlayed = false;
+    public GameObject activeObject;
     public GameObject mousePointer;
 
     public GameObject battleSquareToPlayOn;
@@ -15,11 +15,11 @@ public class GameController : MonoBehaviour
     }
 
     void Update(){
-        if (!cardBeingPlayed && activeCard != null){
-            activeCard = null;
+        if (!objectBeingPlayed && activeObject != null){
+            activeObject = null;
         }
 
-        if(cardBeingPlayed){
+        if(objectBeingPlayed){
             if(!mousePointer.gameObject.activeSelf){
                 mousePointer.gameObject.SetActive(true);
                 mousePointer.transform.SetAsLastSibling();
@@ -28,14 +28,14 @@ public class GameController : MonoBehaviour
             mousePointer.transform.position = Input.mousePosition;
         }
 
-        if(cardBeingPlayed && battleSquareToPlayOn == null && Input.GetMouseButtonDown(0)){
+        if(objectBeingPlayed && battleSquareToPlayOn == null && Input.GetMouseButtonDown(0)){
             CleanController();
         }
     }
 
     public void CleanController(){
         mousePointer.gameObject.SetActive(false);
-        cardBeingPlayed = false;
-        activeCard.GetComponent<CardMovement>().DestroyCardPreview();
+        objectBeingPlayed = false;
+        //activeObject.GetComponent<CardMovement>().DestroyCardPreview();
     }
 }
