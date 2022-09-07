@@ -50,6 +50,10 @@ public class TestCard : CreatureCard
             powerModifier = modifyAmount;
             cardModified = true;
         }
+        else
+        {
+            ResetCardValues();
+        }
     }
 
     public override bool CanPlayCardOnObject(GameObject gameObjectPlayedOn)

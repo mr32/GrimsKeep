@@ -63,26 +63,34 @@ public class BattleSquare : HoverableObject
         if(mouseOnObject && Input.GetMouseButtonDown(0)){
             if (gameController.objectBeingPlayed)
             {
-                if (gameController.activeObject.CompareTag(Constants.BATTLE_SQUARE_ID))
+                if (gameController.activeObject.CompareTag(Constants.BATTLE_SQUARE_ID) && !GameObject.ReferenceEquals(gameController.activeObject, this.gameObject))
                 {
+                    BattleSquare battleSquareBeingMoved = gameController.activeObject.GetComponent<BattleSquare>();
                     // 1. Check if its within the bounds of the movement
 
                     // 2. Copy all CardInfo over
-                    foreach(CardInfo card in GetCardsPlayedOnSquare())
+                    foreach (CardInfo card in battleSquareBeingMoved.GetCardsPlayedOnSquare())
                     {
                         card.cardCopied = true;
-                        UnityEditorInternal.ComponentUtility.CopyComponent(card);
-                        UnityEditorInternal.ComponentUtility.PasteComponentAsNew(gameController.battleSquareToPlayOn);
-
-                        card.enabled = false;
+                        card.MoveCard(Constants.BATTLE_SQUARE_ID, this.gameObject, gameController.activeObject);
+                        //CardInfo copiedCard = gameController.battleSquareToPlayOn.AddComponent(card.GetType()) as CardInfo;
+                        //copiedCard.cardCopied = true;
+                        //CopyClassValues(card, copiedCard);
+                        Destroy(card);
                     }
 
-                    // 3. Clean current square
-                    this.gameObject.GetComponent<Image>().color = Color.white;
+                    // 3. Clean moved square
+                    battleSquareBeingMoved.gameObject.GetComponent<Image>().color = Color.white;
+                    battleSquareBeingMoved.battleSquareAttackGraphic.SetActive(false);
+                    battleSquareBeingMoved.battleSquareDefenseGraphic.SetActive(false);
+                    battleSquareBeingMoved.currentCard = null;
+
+                    // 4. Update graphics on this square
                     UpdateAttackAndDefenseGraphics();
-                    gameController.activeObject.GetComponent<BattleSquare>().UpdateAttackAndDefenseGraphics();
+                    this.GetComponent<Image>().color = Color.red;
+
+                    // gameController.activeObject.GetComponent<BattleSquare>().UpdateAttackAndDefenseGraphics();
                     gameController.CleanController();
-                    currentCard = null;
 
                 }
                 else
@@ -149,11 +157,13 @@ public class BattleSquare : HoverableObject
             
     }
 
-    public CardInfo[] GetCardsPlayedOnSquare(){
+    public void PlayCardOnSquare(CardInfo card)
+    {
+        card.PlayCard(Constants.BATTLE_SQUARE_ID, this.gameObject, card);
+    }
+
+     public CardInfo[] GetCardsPlayedOnSquare(){
         CardInfo[] cardsPlayedOnSquare = this.gameObject.GetComponents<CardInfo>();
-        foreach(CardInfo cardInfo in cardsPlayedOnSquare){
-            cardInfo.enabled = true;
-        }
         return cardsPlayedOnSquare;
     }
 
@@ -278,6 +288,7 @@ public class BattleSquare : HoverableObject
         }
 
         currentCard.cardCopied = true;
+        currentCard.enabled = true;
         UnityEditorInternal.ComponentUtility.CopyComponent(currentCard);
         UnityEditorInternal.ComponentUtility.PasteComponentAsNew(this.gameObject);
     }

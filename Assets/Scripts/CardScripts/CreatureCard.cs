@@ -31,4 +31,11 @@ public abstract class CreatureCard : CardInfo
         return baseCreaturePower + powerModifier + additionalPowerModifier;
     }
 
+    public void ResetCardValues()
+    {
+        powerModifier = 0;
+        additionalPowerModifier = 0;
+        cardModified = false;
+    }
+
 }

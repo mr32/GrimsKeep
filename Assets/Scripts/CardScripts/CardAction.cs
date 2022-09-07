@@ -11,9 +11,12 @@ public abstract class CardAction : MonoBehaviour
         CardRules(gameObjectPlayedOn);
         GameObject.FindGameObjectWithTag(Constants.PLAYER_STAT_GAMEOBJECT_TAG).GetComponent<PlayerStats>().playerMana -= (int) cardPlayed.CardCost;
         GameObject.FindGameObjectWithTag(Constants.PLAYER_STAT_GAMEOBJECT_TAG).GetComponent<PlayerStats>().UpdateCardGraphics();
-        this.gameObject.SendMessage(Constants.CARD_GRAVEYARD_FUNCTION_NAME);
+        if(this.gameObject.GetComponent<CardMovement>())
+            this.gameObject.SendMessage(Constants.CARD_GRAVEYARD_FUNCTION_NAME);
         return true;
     }
+
+    
 
     public abstract bool CanPlayCardOnObject(GameObject gameObjectPlayedOn);
     public abstract void CardRules(GameObject gameObjectPlayedOn);
