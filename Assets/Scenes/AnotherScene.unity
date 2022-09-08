@@ -3346,8 +3346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707ec0a4e255288469363eeac5143341, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardBeingPlayed: 0
-  activeCard: {fileID: 0}
+  activeObject: {fileID: 0}
   mousePointer: {fileID: 0}
   battleSquareToPlayOn: {fileID: 0}
 --- !u!4 &1020034519
@@ -5572,6 +5571,7 @@ GameObject:
   - component: {fileID: 1768163481}
   - component: {fileID: 1768163480}
   - component: {fileID: 1768163479}
+  - component: {fileID: 1768163482}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -5684,6 +5684,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1768163477}
   m_CullTransparentMesh: 0
+--- !u!114 &1768163482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1768163477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92a081c97c941d6499461649c5acb6bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  userGraphicsUp: 0
+  battleSquareIndiciesLit: 
 --- !u!224 &1803479198 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2374172674261279357, guid: 4a15e692f75a2554191257f0abe4629a,

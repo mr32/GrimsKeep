@@ -2,40 +2,59 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameController : MonoBehaviour
+public class GameController : UserGraphicController
 {
-    public bool objectBeingPlayed = false;
     public GameObject activeObject;
     public GameObject mousePointer;
+
+    private GameObject cardPreviewArea;
 
     public GameObject battleSquareToPlayOn;
     void Awake(){
         mousePointer = GameObject.FindGameObjectWithTag(Constants.MOUSE_POINTER_TAG);
-        mousePointer.gameObject.SetActive(false);
+        mousePointer.SetActive(false);
+
+        cardPreviewArea = GameObject.FindGameObjectWithTag(Constants.CARD_PREVIEW_TAG);
+
+        activeObject = null;
     }
 
-    void Update(){
-        if (!objectBeingPlayed && activeObject != null){
-            activeObject = null;
-        }
-
-        if(objectBeingPlayed){
-            if(!mousePointer.gameObject.activeSelf){
-                mousePointer.gameObject.SetActive(true);
+    public override void Update(){
+        if(activeObject){
+            if(!mousePointer.activeSelf){
+                mousePointer.SetActive(true);
                 mousePointer.transform.SetAsLastSibling();
             }
             
             mousePointer.transform.position = Input.mousePosition;
         }
 
-        if(objectBeingPlayed && battleSquareToPlayOn == null && Input.GetMouseButtonDown(0)){
-            CleanController();
-        }
+        base.Update();
     }
 
     public void CleanController(){
-        mousePointer.gameObject.SetActive(false);
-        objectBeingPlayed = false;
-        //activeObject.GetComponent<CardMovement>().DestroyCardPreview();
+        if (activeObject && activeObject.GetComponent<CardMovement>())
+            activeObject.GetComponent<CardMovement>().DestroyCardPreview();
+
+        activeObject = null;
+        mousePointer.SetActive(false);
+
+        
+    }
+
+    public override bool ResetCondition()
+    {
+        return activeObject != null;
+    }
+
+    public override void ResetSelf()
+    {
+        if (activeObject && activeObject.GetComponent<CardMovement>())
+            activeObject.GetComponent<CardMovement>().DestroyCardPreview();
+
+        activeObject = null;
+        mousePointer.SetActive(false);
+
+        base.ResetSelf();
     }
 }

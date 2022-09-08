@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class CreatureCard : CardInfo
+public abstract class CreatureCard : Card
 {
-    public abstract uint baseCreaturePower { get; }
-    public abstract uint baseCreatureDefense { get; }
-    public uint powerModifier = 0;
-    public uint additionalPowerModifier = 0;
+    public abstract int BaseCreaturePower { get; }
+    public abstract int BaseCreatureDefense { get; }
+    public override CardTypes CardType => CardTypes.MONSTER;
+
+    public int powerModifier = 0;
+    public int additionalPowerModifier = 0;
+    public bool cardModified;
 
     public enum MoveDirections
     {
@@ -23,15 +26,11 @@ public abstract class CreatureCard : CardInfo
 
     public abstract MoveDirections[] moveDirections { get; } 
 
-    public CreatureCard(){
-        cardType = CardType.MONSTER;
+    public int GetTotalPowerTotal(){
+        return BaseCreaturePower + powerModifier + additionalPowerModifier;
     }
 
-    public uint GetTotalPowerTotal(){
-        return baseCreaturePower + powerModifier + additionalPowerModifier;
-    }
-
-    public void ResetCardValues()
+    public override void ResetCardValues()
     {
         powerModifier = 0;
         additionalPowerModifier = 0;
