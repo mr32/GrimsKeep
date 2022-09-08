@@ -30,6 +30,7 @@ public class CardMovement : HoverableObject
         if (mouseOnObject && !gameController.activeObject && this.gameObject.GetComponent<Card>().HasEnoughMana() && Input.GetMouseButtonDown(0))
         {
             gameController.activeObject = this.gameObject;
+            gameController.userGraphicsUp = true;
         }
     }
 

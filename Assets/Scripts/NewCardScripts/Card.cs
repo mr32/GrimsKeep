@@ -37,17 +37,20 @@ public abstract class Card : MonoBehaviour
         GameObject.FindGameObjectWithTag(Constants.PLAYER_STAT_GAMEOBJECT_TAG).GetComponent<PlayerStats>().playerMana -= (int)this.CardCost;
         GameObject.FindGameObjectWithTag(Constants.PLAYER_STAT_GAMEOBJECT_TAG).GetComponent<PlayerStats>().UpdateCardGraphics();
 
-        if (!cardCopied)
+        if (!cardCopied || this.GetComponent<CardMovement>())
         {
             this.gameObject.SendMessage(Constants.CARD_GRAVEYARD_FUNCTION_NAME);
         }
-
-        // If this came from the player's hand, destroy the game object
-        if (this.GetComponent<CardMovement>())
-        {
-            Destroy(this.gameObject);
-        }
     }
+
+    public virtual void MoveCard(GameObject target)
+    {
+        ResetCardValues();
+        CardRules(target);
+        CopyCardToTarget(target);
+    }
+
+    public virtual void ResetCardValues() { }
 
     public virtual void CardRules(GameObject target) { }
     public abstract bool CanPlayCardOnTarget(GameObject target);

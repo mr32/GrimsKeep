@@ -9,27 +9,20 @@ public class BattleBoard : UserGraphicController
 
     private Color originalColor = Color.white;
 
-    // Start is called before the first frame update
-    void Start()
+    public override bool ResetCondition()
     {
-        
+        return true;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void ResetSelf()
     {
-        if(userGraphicsUp && Input.GetMouseButtonDown(0))
+        foreach (int i in battleSquareIndiciesLit)
         {
-            CleanLitSquares();
+            if(!this.transform.GetChild(i).GetComponent<BattleSquare>().squareOccupied)
+                this.transform.GetChild(i).GetComponent<Image>().color = originalColor;
         }
-    }
+        battleSquareIndiciesLit.Clear();
 
-    public void CleanLitSquares()
-    {
-        foreach(int i in battleSquareIndiciesLit)
-        {
-            this.transform.GetChild(i).GetComponent<Image>().color = originalColor;
-        }
-        userGraphicsUp = false;
+        base.ResetSelf();
     }
 }

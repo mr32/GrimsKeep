@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UserGraphicController : MonoBehaviour
+public abstract class UserGraphicController : MonoBehaviour
 {
     public bool userGraphicsUp;
 
@@ -10,15 +10,23 @@ public class UserGraphicController : MonoBehaviour
     {
         userGraphicsUp = false;
     }
-    // Start is called before the first frame update
-    void Start()
+
+    public virtual void Update()
     {
-        
+        ClearUserGraphics();
     }
 
-    // Update is called once per frame
-    void Update()
+    public virtual void ClearUserGraphics()
     {
-        
+        if(userGraphicsUp && ResetCondition() && Input.GetMouseButtonDown(1))
+        {
+            ResetSelf();
+        }
+    }
+
+    public abstract bool ResetCondition();
+    public virtual void ResetSelf()
+    {
+        userGraphicsUp = false;
     }
 }

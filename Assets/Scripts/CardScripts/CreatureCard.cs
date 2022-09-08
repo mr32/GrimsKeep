@@ -30,13 +30,7 @@ public abstract class CreatureCard : Card
         return BaseCreaturePower + powerModifier + additionalPowerModifier;
     }
 
-    public override void PlayCard(GameObject target)
-    {
-        ResetCardValues();
-        base.PlayCard(target);
-    }
-
-    public void ResetCardValues()
+    public override void ResetCardValues()
     {
         powerModifier = 0;
         additionalPowerModifier = 0;

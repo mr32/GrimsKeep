@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameController : MonoBehaviour
+public class GameController : UserGraphicController
 {
     public GameObject activeObject;
     public GameObject mousePointer;
@@ -19,7 +19,7 @@ public class GameController : MonoBehaviour
         activeObject = null;
     }
 
-    void Update(){
+    public override void Update(){
         if(activeObject){
             if(!mousePointer.activeSelf){
                 mousePointer.SetActive(true);
@@ -29,14 +29,32 @@ public class GameController : MonoBehaviour
             mousePointer.transform.position = Input.mousePosition;
         }
 
-        if(battleSquareToPlayOn == null && Input.GetMouseButtonDown(0)){
-            CleanController();
-        }
+        base.Update();
     }
 
     public void CleanController(){
+        if (activeObject && activeObject.GetComponent<CardMovement>())
+            activeObject.GetComponent<CardMovement>().DestroyCardPreview();
+
         activeObject = null;
         mousePointer.SetActive(false);
-        //activeObject.GetComponent<CardMovement>().DestroyCardPreview();
+
+        
+    }
+
+    public override bool ResetCondition()
+    {
+        return activeObject != null;
+    }
+
+    public override void ResetSelf()
+    {
+        if (activeObject && activeObject.GetComponent<CardMovement>())
+            activeObject.GetComponent<CardMovement>().DestroyCardPreview();
+
+        activeObject = null;
+        mousePointer.SetActive(false);
+
+        base.ResetSelf();
     }
 }
