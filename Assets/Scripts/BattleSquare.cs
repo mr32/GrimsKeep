@@ -63,6 +63,7 @@ public class BattleSquare : HoverableObject
                 // If the activeObject is a Card
                 if (gameController.activeObject.CompareTag(Constants.CARD_TAG))
                 {
+                    
                     Card card = gameController.activeObject.GetComponent<Card>();
                     card.PlayCard(this.gameObject);
 
@@ -72,15 +73,24 @@ public class BattleSquare : HoverableObject
                 }
                 else if (gameController.activeObject.CompareTag(Constants.BATTLE_SQUARE_ID) && gameController.activeObject.GetComponent<BattleSquare>().availablePlacesToMove.Contains(orderInColumn))
                 {
-                    foreach(Card card in gameController.activeObject.GetComponent<BattleSquare>().GetCardsPlayedOnSquare())
+                    Card[] previousSquareModifiers = GetFilteredCardsPlayedOnSquare(Card.CardTypes.SQUARE_MODIFIER);
+
+                    foreach (Card card in gameController.activeObject.GetComponent<BattleSquare>().GetMovableCardsPlayedOnSquare())
                     {
                         card.MoveCard(this.gameObject);
                     }
+
+                    foreach (Card squareModifier in previousSquareModifiers)
+                    {
+                        squareModifier.PlayCard(this.gameObject);
+                        Destroy(squareModifier);
+                    }
+
                     squareOccupied = true;
                     UpdateAttackAndDefenseGraphics();
                     
                     // clean the square that the cards came from
-                    gameController.activeObject.GetComponent<BattleSquare>().ResetBattleSquareToDefaultState();
+                    gameController.activeObject.GetComponent<BattleSquare>().ResetBattleSquareToDefaultState(false);
                     gameController.ResetSelf();
                     battlePlaySquare.GetComponent<BattleBoard>().ResetSelf();
                 }
@@ -88,7 +98,7 @@ public class BattleSquare : HoverableObject
             }
             else
             {
-                CreatureCard.MoveDirections[] moves = GetCreatureCardsPlayedOnSquare().SelectMany(x => ((CreatureCard)x).moveDirections).ToArray().Distinct().Cast<CreatureCard.MoveDirections>().ToArray();
+                CreatureCard.MoveDirections[] moves = GetFilteredCardsPlayedOnSquare(Card.CardTypes.MONSTER).SelectMany(x => ((CreatureCard)x).moveDirections).ToArray().Distinct().Cast<CreatureCard.MoveDirections>().ToArray();
                 LightUpMoveSquares(moves);
                 PickUpCardsOnSquare();
             }
@@ -213,15 +223,27 @@ public class BattleSquare : HoverableObject
         return false;
     }
 
+
+
     public Card[] GetCreatureCardsPlayedOnSquare()
     {
         return GetCardsPlayedOnSquare().Where(card => card.CardType == Card.CardTypes.MONSTER).ToArray();
     }
 
+    public Card[] GetMovableCardsPlayedOnSquare()
+    {
+        return GetCardsPlayedOnSquare().Where(card => card.CardType != Card.CardTypes.SQUARE_MODIFIER).ToArray();
+    }
+
+    public Card[] GetFilteredCardsPlayedOnSquare(Card.CardTypes cardType)
+    {
+        return GetCardsPlayedOnSquare().Where(card => card.CardType == cardType).ToArray();
+    }
+
     public int CalculateSquarePowerTotals()
     {
         int total = 0;
-        Card[] creatureList = GetCreatureCardsPlayedOnSquare();
+        Card[] creatureList = GetFilteredCardsPlayedOnSquare(Card.CardTypes.MONSTER);
         foreach(CreatureCard creatureCard in creatureList)
         {
             total += creatureCard.GetTotalPowerTotal();
@@ -235,7 +257,7 @@ public class BattleSquare : HoverableObject
 
     private bool AnyCreatureModifiedOnSquare()
     {
-        return GetCreatureCardsPlayedOnSquare().Where(card => ((CreatureCard)card).cardModified == true).ToArray().Length > 0;
+        return GetFilteredCardsPlayedOnSquare(Card.CardTypes.MONSTER).Where(card => ((CreatureCard)card).cardModified == true).ToArray().Length > 0;
     }
 
     private void UpdateAttackAndDefenseGraphics()
@@ -256,14 +278,16 @@ public class BattleSquare : HoverableObject
         battleSquareDefenseGraphic.GetComponentInChildren<Text>().text = 0.ToString();
     }
 
-    public void ResetBattleSquareToDefaultState()
+    public void ResetBattleSquareToDefaultState(bool fullReset)
     {
         battleSquareAttackGraphic.GetComponentInChildren<Text>().text = 0.ToString();
         battleSquareDefenseGraphic.GetComponentInChildren<Text>().text = 0.ToString();
 
         this.GetComponent<Image>().color = Color.white;
 
-        foreach(Card card in GetCardsPlayedOnSquare())
+        Card[] cardsToReset = fullReset ? GetCardsPlayedOnSquare() : GetMovableCardsPlayedOnSquare();
+
+        foreach(Card card in cardsToReset)
         {
             Destroy(card);
         }

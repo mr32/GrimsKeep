@@ -17,7 +17,8 @@ public abstract class Card : MonoBehaviour
     {
         MONSTER,
         SPELL,
-        CREATURE_MODIFIER
+        CREATURE_MODIFIER,
+        SQUARE_MODIFIER
     }
 
     public void Start()
