@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 public static class Constants
 {
+    public static string CARD_TAG = "Card";
     public static string CARD_PREVIEW_TAG = "CardPreview";
     public static string HAND_AREA_TAG = "HandArea";
     public static string GAME_CONTROLLER_TAG = "GameController";

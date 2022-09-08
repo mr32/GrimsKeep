@@ -8,14 +8,7 @@ public class TestSpell : SpellCard
     public override string CardDescription => $"Add {creatureModifierAmount} to target Creature";
     public override uint CardCost { get => 1; set => cardCost = value; }
     public override string CardFlair => "Cool Test Spell!";
-    void Awake() {
-        creatureModifierAmount = 5;
-        cardType = CardType.CREATURE_MODIFIER;
-    }
-    void Start(){
-        if(!cardCopied)
-            this.gameObject.SendMessage(Constants.SET_CARD_GRAPHICS_FUNCTION_NAME, this);
-    }
+    public int creatureModifierAmount = 5;
 
     public override void CardRules(GameObject gameObjectPlayedOn)
     {
@@ -24,8 +17,11 @@ public class TestSpell : SpellCard
         creatureCard.additionalPowerModifier += creatureModifierAmount;
     }
 
-    public override bool CanPlayCardOnObject(GameObject gameObjectPlayedOn)
+    public override bool CanPlayCardOnTarget(GameObject target)
     {
-        return HasEnoughMana() && gameObjectPlayedOn.GetComponent<BattleSquare>().IsCreatureOnSquare();
+        BattleSquare targetBattleSquare = target.GetComponent<BattleSquare>();
+
+        // If we played it on a BattleSquare and there is a creature on the square
+        return targetBattleSquare && targetBattleSquare.IsCreatureOnSquare();
     }
 }

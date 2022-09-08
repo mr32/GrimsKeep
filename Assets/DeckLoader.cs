@@ -32,7 +32,7 @@ public class DeckLoader : MonoBehaviour
             GameObject card = Instantiate(cardPrefab);
             card.transform.SetParent(playerHand);
             card.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-            card.gameObject.AddComponent(System.Type.GetType(cardName));
+            card.AddComponent(System.Type.GetType(cardName));
         }
     }
 

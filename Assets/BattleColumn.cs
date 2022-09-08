@@ -10,10 +10,10 @@ public class BattleColumn : MonoBehaviour
     public uint CalculateColumnStats(){
         uint power = 0;
         foreach (BattleSquare battleSquare in this.gameObject.GetComponentsInChildren<BattleSquare>()){
-            CardInfo[] creatureList = battleSquare.GetCardsPlayedOnSquare().Where(card => card.cardType == CardInfo.CardType.MONSTER).ToArray();
-            foreach (CreatureCard cardInfo in creatureList){
-                power += cardInfo.GetTotalPowerTotal();
-            }
+            Card[] creatureList = battleSquare.GetCardsPlayedOnSquare().Where(card => card.CardType == Card.CardTypes.MONSTER).ToArray();
+            //foreach (CreatureCard cardInfo in creatureList){
+            //    power += cardInfo.GetTotalPowerTotal();
+            //}
         }
         return power;
     }

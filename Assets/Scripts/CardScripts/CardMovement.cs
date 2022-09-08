@@ -27,9 +27,8 @@ public class CardMovement : HoverableObject
 
     void Update()
     {
-        if (mouseOnObject && !gameController.objectBeingPlayed && this.gameObject.GetComponent<CardInfo>().HasEnoughMana() && Input.GetMouseButtonDown(0))
+        if (mouseOnObject && !gameController.activeObject && this.gameObject.GetComponent<Card>().HasEnoughMana() && Input.GetMouseButtonDown(0))
         {
-            gameController.objectBeingPlayed = true;
             gameController.activeObject = this.gameObject;
         }
     }
@@ -38,7 +37,7 @@ public class CardMovement : HoverableObject
     {
         base.OnPointerEnter(eventData);
         this.gameObject.GetComponent<Outline>().enabled = true;
-        if(!gameController.objectBeingPlayed)
+        if(!gameController.activeObject)
             ShowCardPreviewFromHand();
     }
 

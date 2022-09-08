@@ -4,38 +4,39 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    public bool objectBeingPlayed = false;
     public GameObject activeObject;
     public GameObject mousePointer;
+
+    private GameObject cardPreviewArea;
 
     public GameObject battleSquareToPlayOn;
     void Awake(){
         mousePointer = GameObject.FindGameObjectWithTag(Constants.MOUSE_POINTER_TAG);
-        mousePointer.gameObject.SetActive(false);
+        mousePointer.SetActive(false);
+
+        cardPreviewArea = GameObject.FindGameObjectWithTag(Constants.CARD_PREVIEW_TAG);
+
+        activeObject = null;
     }
 
     void Update(){
-        if (!objectBeingPlayed && activeObject != null){
-            activeObject = null;
-        }
-
-        if(objectBeingPlayed){
-            if(!mousePointer.gameObject.activeSelf){
-                mousePointer.gameObject.SetActive(true);
+        if(activeObject){
+            if(!mousePointer.activeSelf){
+                mousePointer.SetActive(true);
                 mousePointer.transform.SetAsLastSibling();
             }
             
             mousePointer.transform.position = Input.mousePosition;
         }
 
-        if(objectBeingPlayed && battleSquareToPlayOn == null && Input.GetMouseButtonDown(0)){
+        if(battleSquareToPlayOn == null && Input.GetMouseButtonDown(0)){
             CleanController();
         }
     }
 
     public void CleanController(){
-        mousePointer.gameObject.SetActive(false);
-        objectBeingPlayed = false;
+        activeObject = null;
+        mousePointer.SetActive(false);
         //activeObject.GetComponent<CardMovement>().DestroyCardPreview();
     }
 }
