@@ -30,7 +30,7 @@ public class BattleSquarePreview : UserGraphicController
         {
             BattleSquare battleSquare = gameController.battleSquareToPlayOn.GetComponent<BattleSquare>();
             
-            if(battleSquare.GetCardsPlayedOnSquare().Length > 0)
+            if(battleSquare.cardsPlayedOnObject.Count > 0)
             {
                 battleSquarePreviewPane.SetActive(true);
 
@@ -42,7 +42,7 @@ public class BattleSquarePreview : UserGraphicController
                 );
 
 
-                foreach (Card card in battleSquare.GetCardsPlayedOnSquare())
+                foreach (Card card in battleSquare.cardsPlayedOnObject)
                 {
                     GameObject cardPrefab = Instantiate(battleSquare.cardPrefab);
 
@@ -50,7 +50,8 @@ public class BattleSquarePreview : UserGraphicController
                     cardPrefab.transform.localScale = new Vector3(1f, 1f, 1f);
                     cardPrefab.GetComponent<CardMovement>().enabled = false;
 
-                    cardPrefab.AddComponent(card.GetType());
+                    cardPrefab.GetComponent<CardInfo>().card = card;
+                    cardPrefab.GetComponent<CardGraphics>().SetCardGraphics();
                 }
                 userGraphicsUp = true;
             }

@@ -27,10 +27,9 @@ public class CardMovement : HoverableObject
 
     void Update()
     {
-        if (mouseOnObject && !gameController.activeObject && this.gameObject.GetComponent<Card>().HasEnoughMana() && Input.GetMouseButtonDown(0))
+        if(mouseOnObject && Input.GetMouseButtonDown(0))
         {
-            gameController.activeObject = this.gameObject;
-            gameController.userGraphicsUp = true;
+            gameController.HoldObject(this.gameObject);
         }
     }
 
@@ -38,6 +37,7 @@ public class CardMovement : HoverableObject
     {
         base.OnPointerEnter(eventData);
         this.gameObject.GetComponent<Outline>().enabled = true;
+        
         if(!gameController.activeObject)
             ShowCardPreviewFromHand();
     }
@@ -64,6 +64,7 @@ public class CardMovement : HoverableObject
         cardCopy.transform.SetParent(UICanvas);
         cardCopy.transform.position = cardPreviewArea.transform.position;
         cardCopy.transform.localScale = cardPreviewArea.transform.localScale;
+        cardCopy.GetComponent<CardInfo>().card = this.GetComponent<CardInfo>().card;
         cardCopy.gameObject.GetComponent<CardMovement>().enabled = false;
     }
 

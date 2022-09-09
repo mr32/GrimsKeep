@@ -13,12 +13,11 @@ public class TestSpell : SpellCard
 
     public override void CardRules(GameObject gameObjectPlayedOn)
     {
-        CreatureCard creatureCard = gameObjectPlayedOn.GetComponent<CreatureCard>();
+        BattleSquare battleSquare = gameObjectPlayedOn.GetComponent<BattleSquare>();
 
-        if (creatureCard)
+        foreach(CreatureCard creatureCard in battleSquare.GetCreatureCardsPlayedOnSquare())
         {
-            creatureCard.additionalPowerModifier += creatureModifierAmount;
-            creatureCard.cardModified = true;
+            ApplyToCreature(creatureCard);
         }
     }
 
@@ -28,5 +27,11 @@ public class TestSpell : SpellCard
 
         // If we played it on a BattleSquare and there is a creature on the square
         return targetBattleSquare && targetBattleSquare.IsCreatureOnSquare();
+    }
+
+    public override void ApplyToCreature(CreatureCard c)
+    {
+        c.additionalPowerModifier += creatureModifierAmount;
+        c.cardModified = true;
     }
 }

@@ -18,8 +18,14 @@ public class BattleBoard : UserGraphicController
     {
         foreach (int i in battleSquareIndiciesLit)
         {
-            if(!this.transform.GetChild(i).GetComponent<BattleSquare>().squareOccupied)
+            BattleSquare battleSquare = this.transform.GetChild(i).GetComponent<BattleSquare>();
+            if(!battleSquare.squareOccupied)
                 this.transform.GetChild(i).GetComponent<Image>().color = originalColor;
+
+            if (battleSquare.AnySquareModifiers())
+            {
+                this.transform.GetChild(i).GetComponent<Image>().color = Color.yellow;
+            }
         }
         battleSquareIndiciesLit.Clear();
 
