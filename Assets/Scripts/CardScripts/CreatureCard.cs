@@ -7,6 +7,8 @@ public abstract class CreatureCard : Card
 {
     public abstract int BaseCreaturePower { get; }
     public abstract int BaseCreatureDefense { get; }
+
+    public abstract int BaseCreatureHealth { get; }
     public override CardTypes CardType => CardTypes.MONSTER;
 
     public int powerModifier = 0;

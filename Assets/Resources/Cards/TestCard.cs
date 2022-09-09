@@ -20,6 +20,8 @@ public class TestCard : CreatureCard
     public override string CardFlair => "LARGE CREATURE";
     public override uint CardCost { get => 3; set => cardCost = value; }
 
+    public override int BaseCreatureHealth => 2;
+
     public override void CardRules(GameObject target)
     {
         BattleSquare battleSquare = target.GetComponent<BattleSquare>();
