@@ -36,7 +36,7 @@ public class CardGraphics : MonoBehaviour
             //}
         }
 
-        if(cardInfo.CardType == Card.CardTypes.SPELL || cardInfo.CardType == Card.CardTypes.CREATURE_MODIFIER){
+        if(cardInfo is SpellCard){
             cardPowerGraphic.SetActive(false);
             cardDefenseGraphic.SetActive(false);
         }

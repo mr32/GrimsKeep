@@ -8,15 +8,18 @@ public class TestSpell : SpellCard
     public override string CardDescription => $"Add {creatureModifierAmount} to target Creature";
     public override uint CardCost { get => 1; set => cardCost = value; }
     public override string CardFlair => "Cool Test Spell!";
-    public override CardTypes CardType => CardTypes.SQUARE_MODIFIER;
     public int creatureModifierAmount = 5;
+    public override CardTypes CardType => CardTypes.SQUARE_MODIFIER;
 
     public override void CardRules(GameObject gameObjectPlayedOn)
     {
         CreatureCard creatureCard = gameObjectPlayedOn.GetComponent<CreatureCard>();
-        
-        if(creatureCard)
+
+        if (creatureCard)
+        {
             creatureCard.additionalPowerModifier += creatureModifierAmount;
+            creatureCard.cardModified = true;
+        }
     }
 
     public override bool CanPlayCardOnTarget(GameObject target)
