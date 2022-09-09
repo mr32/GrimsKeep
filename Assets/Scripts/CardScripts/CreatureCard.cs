@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public abstract class CreatureCard : Card
@@ -36,5 +37,4 @@ public abstract class CreatureCard : Card
         additionalPowerModifier = 0;
         cardModified = false;
     }
-
 }

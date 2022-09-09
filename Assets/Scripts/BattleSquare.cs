@@ -22,6 +22,8 @@ public class BattleSquare : HoverableObject
 
     private GameObject battlePlaySquare;
 
+    private bool objectPlayed = false;
+
     public bool squareOccupied;
 
     public List<int> availablePlacesToMove = new List<int>();
@@ -61,34 +63,49 @@ public class BattleSquare : HoverableObject
             if (gameController.activeObject)
             {
                 // If the activeObject is a Card
-                if (gameController.activeObject.CompareTag(Constants.CARD_TAG))
+                if (gameController.activeObject.CompareTag(Constants.CARD_TAG) && gameController.activeObject.GetComponent<Card>().CanPlayCardOnTarget(this.gameObject))
                 {
+                    
                     Card card = gameController.activeObject.GetComponent<Card>();
                     card.PlayCard(this.gameObject);
 
                     squareOccupied = true;
-                    UpdateAttackAndDefenseGraphics();
                     gameController.ResetSelf();
+                    objectPlayed = true;
                 }
                 else if (gameController.activeObject.CompareTag(Constants.BATTLE_SQUARE_ID) && gameController.activeObject.GetComponent<BattleSquare>().availablePlacesToMove.Contains(orderInColumn))
                 {
-                    foreach(Card card in gameController.activeObject.GetComponent<BattleSquare>().GetCardsPlayedOnSquare())
+                    foreach (Card card in gameController.activeObject.GetComponent<BattleSquare>().GetMovableCardsPlayedOnSquare())
                     {
                         card.MoveCard(this.gameObject);
                     }
+
                     squareOccupied = true;
-                    UpdateAttackAndDefenseGraphics();
                     
                     // clean the square that the cards came from
-                    gameController.activeObject.GetComponent<BattleSquare>().ResetBattleSquareToDefaultState();
+                    gameController.activeObject.GetComponent<BattleSquare>().ResetBattleSquareToDefaultState(false);
                     gameController.ResetSelf();
                     battlePlaySquare.GetComponent<BattleBoard>().ResetSelf();
+                    objectPlayed = true;
                 }
-                
+
+                // Apply Square modifiers after all cards are moved
+                foreach(Card card in GetFilteredCardsPlayedOnSquare(Card.CardTypes.SQUARE_MODIFIER).Where(c => ((SpellCard)c).cardApplied == false))
+                {
+                    card.MoveCard(this.gameObject);
+                    Destroy(card);
+                    objectPlayed = true;
+                }
+
+                if (objectPlayed)
+                {
+                    UpdateAttackAndDefenseGraphics();
+                    objectPlayed = false;
+                }                
             }
             else
             {
-                CreatureCard.MoveDirections[] moves = GetCreatureCardsPlayedOnSquare().SelectMany(x => ((CreatureCard)x).moveDirections).ToArray().Distinct().Cast<CreatureCard.MoveDirections>().ToArray();
+                CreatureCard.MoveDirections[] moves = GetFilteredCardsPlayedOnSquare(Card.CardTypes.MONSTER).SelectMany(x => ((CreatureCard)x).moveDirections).ToArray().Distinct().Cast<CreatureCard.MoveDirections>().ToArray();
                 LightUpMoveSquares(moves);
                 PickUpCardsOnSquare();
             }
@@ -213,15 +230,27 @@ public class BattleSquare : HoverableObject
         return false;
     }
 
+
+
     public Card[] GetCreatureCardsPlayedOnSquare()
     {
         return GetCardsPlayedOnSquare().Where(card => card.CardType == Card.CardTypes.MONSTER).ToArray();
     }
 
+    public Card[] GetMovableCardsPlayedOnSquare()
+    {
+        return GetCardsPlayedOnSquare().Where(card => card.CardType != Card.CardTypes.SQUARE_MODIFIER).ToArray();
+    }
+
+    public Card[] GetFilteredCardsPlayedOnSquare(Card.CardTypes cardType)
+    {
+        return GetCardsPlayedOnSquare().Where(card => card.CardType == cardType).ToArray();
+    }
+
     public int CalculateSquarePowerTotals()
     {
         int total = 0;
-        Card[] creatureList = GetCreatureCardsPlayedOnSquare();
+        Card[] creatureList = GetFilteredCardsPlayedOnSquare(Card.CardTypes.MONSTER);
         foreach(CreatureCard creatureCard in creatureList)
         {
             total += creatureCard.GetTotalPowerTotal();
@@ -235,7 +264,12 @@ public class BattleSquare : HoverableObject
 
     private bool AnyCreatureModifiedOnSquare()
     {
-        return GetCreatureCardsPlayedOnSquare().Where(card => ((CreatureCard)card).cardModified == true).ToArray().Length > 0;
+        return GetFilteredCardsPlayedOnSquare(Card.CardTypes.MONSTER).Where(card => ((CreatureCard)card).cardModified == true).ToArray().Length > 0;
+    }
+
+    private bool AnySquareModifiers()
+    {
+        return GetFilteredCardsPlayedOnSquare(Card.CardTypes.SQUARE_MODIFIER).Length > 0;
     }
 
     private void UpdateAttackAndDefenseGraphics()
@@ -256,16 +290,23 @@ public class BattleSquare : HoverableObject
         battleSquareDefenseGraphic.GetComponentInChildren<Text>().text = 0.ToString();
     }
 
-    public void ResetBattleSquareToDefaultState()
+    public void ResetBattleSquareToDefaultState(bool fullReset)
     {
         battleSquareAttackGraphic.GetComponentInChildren<Text>().text = 0.ToString();
         battleSquareDefenseGraphic.GetComponentInChildren<Text>().text = 0.ToString();
 
-        this.GetComponent<Image>().color = Color.white;
+        this.GetComponent<Image>().color = AnySquareModifiers() ? Color.yellow : Color.white;
 
-        foreach(Card card in GetCardsPlayedOnSquare())
+        Card[] cardsToReset = fullReset ? GetCardsPlayedOnSquare() : GetMovableCardsPlayedOnSquare();
+
+        foreach(Card card in cardsToReset)
         {
             Destroy(card);
+        }
+
+        foreach(Card card in GetFilteredCardsPlayedOnSquare(Card.CardTypes.SQUARE_MODIFIER))
+        {
+            ((SpellCard)card).cardApplied = false;
         }
 
         squareOccupied = false;

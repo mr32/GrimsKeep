@@ -3346,6 +3346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707ec0a4e255288469363eeac5143341, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  userGraphicsUp: 0
   activeObject: {fileID: 0}
   mousePointer: {fileID: 0}
   battleSquareToPlayOn: {fileID: 0}
@@ -6810,7 +6811,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealth: 20
-  playerMana: 8
+  playerMana: 20
 --- !u!114 &2101165043
 MonoBehaviour:
   m_ObjectHideFlags: 0
