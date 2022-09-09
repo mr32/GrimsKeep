@@ -15,8 +15,6 @@ public class BattleSquare : HoverableObject
     public BattlePaneStats battlePaneStats;
 
     public GameObject cardPrefab;
-    private GameObject battleSquarePreviewPanel;
-    private GameObject battleSquarePreviewContentPane;
     private GameObject battleSquareAttackGraphic;
     private GameObject battleSquareDefenseGraphic;
 
@@ -30,9 +28,6 @@ public class BattleSquare : HoverableObject
 
     void Awake()
     {
-        battleSquarePreviewPanel = GameObject.FindGameObjectWithTag(Constants.BATTLE_SQUARE_PREVIEW_PANE_TAG);
-        battleSquarePreviewContentPane = GameObject.FindGameObjectWithTag(Constants.BATTLE_SQUARE_PREVIEW_CONTENT_PANE_TAG);
-
         battlePlaySquare = this.gameObject.transform.parent.gameObject;
 
         
@@ -53,8 +48,6 @@ public class BattleSquare : HoverableObject
     void Start(){
         gameController = GameObject.FindGameObjectWithTag(Constants.GAME_CONTROLLER_TAG).GetComponent<GameController>();
         orderInColumn = this.transform.GetSiblingIndex();
-
-        battleSquarePreviewPanel.SetActive(false);
     }
 
     void Update(){

@@ -90,6 +90,7 @@ GameObject:
   - component: {fileID: 2374172674261279359}
   - component: {fileID: 2374172674261279358}
   - component: {fileID: 1306263024335773839}
+  - component: {fileID: 6818882274600747116}
   m_Layer: 5
   m_Name: BattleSquare
   m_TagString: BattleSquare
@@ -173,6 +174,20 @@ MonoBehaviour:
   battlePaneStats: {fileID: 0}
   cardPrefab: {fileID: 2377617882301758325, guid: 3476692678d6ec245a903654709d9628,
     type: 3}
+  squareOccupied: 0
+  availablePlacesToMove: 
+--- !u!114 &6818882274600747116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2374172674261279356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fc3651f83a86fd44a4d36d8724f833a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4315308836756359816
 GameObject:
   m_ObjectHideFlags: 0
