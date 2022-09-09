@@ -18,4 +18,6 @@ public abstract class SpellCard : Card
         cardApplied = true;
         base.MoveCard(target);
     }
+
+    public virtual void ApplyToCreature(CreatureCard c) { }
 }

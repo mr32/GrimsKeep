@@ -42,6 +42,15 @@ public class GameController : UserGraphicController
         
     }
 
+    public void HoldObject(GameObject target)
+    {
+        if(activeObject == null)
+        {
+            activeObject = target;
+            userGraphicsUp = true;
+        }
+        
+    }
     public override bool ResetCondition()
     {
         return activeObject != null;

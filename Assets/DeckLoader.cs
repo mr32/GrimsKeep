@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class DeckLoader : MonoBehaviour
     public List<string> deck = new List<string>();
 
     void Awake(){
-        Object[] cardsForTesting = Resources.LoadAll("Cards");
+        UnityEngine.Object[] cardsForTesting = Resources.LoadAll("Cards");
         for(int i = 0; i < 3; i++){
             foreach(var c in cardsForTesting){
                 deck.Add(c.name);
@@ -32,7 +33,9 @@ public class DeckLoader : MonoBehaviour
             GameObject card = Instantiate(cardPrefab);
             card.transform.SetParent(playerHand);
             card.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-            card.AddComponent(System.Type.GetType(cardName));
+            card.GetComponent<CardInfo>().card = (Card)Activator.CreateInstance(System.Type.GetType(cardName));
+            card.GetComponent<CardInfo>().card.cardSource = Card.CardSource.HAND;
+            card.GetComponent<CardGraphics>().SetCardGraphics();
         }
     }
 

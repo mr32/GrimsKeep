@@ -39,4 +39,26 @@ public abstract class CreatureCard : Card
         additionalPowerModifier = 0;
         cardModified = false;
     }
+
+    public override string ToString()
+    {
+        return string.Format("cName: {0} -- cCost: {1} -- cPower: {2} -- cTotalPower: {3}", CardName, CardCost, BaseCreaturePower, GetTotalPowerTotal());
+    }
+
+    public override void PlayCard(GameObject target)
+    {
+        base.PlayCard(target);
+
+        // Check if there are any existing spell modifiers
+        BattleSquare battleSquare = target.GetComponent<BattleSquare>();
+
+        if (battleSquare)
+        {
+            foreach(SpellCard spellCard in battleSquare.GetFilteredCardsPlayedOnSquare(CardTypes.SQUARE_MODIFIER))
+            {
+                spellCard.ApplyToCreature(this);
+            }
+        }
+    }
+
 }

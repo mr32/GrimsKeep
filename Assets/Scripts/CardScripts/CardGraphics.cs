@@ -21,14 +21,22 @@ public class CardGraphics : MonoBehaviour
         cardCostGraphic = Utils.FindChildWithTag(this.gameObject, CardConstants.CARD_COST_TAG);
     }
 
-    public void SetCardGraphics(Card cardInfo){
-        cardNameGraphic.GetComponentInChildren<Text>().text = cardInfo.CardName;
-        cardDescGraphic.GetComponentInChildren<Text>().text = cardInfo.CardDescription;
-        cardCostGraphic.GetComponentInChildren<Text>().text = cardInfo.CardCost.ToString();
-        cardFlairGraphic.GetComponentInChildren<Text>().text = cardInfo.CardFlair;
-        
-        if(cardInfo.CardType == Card.CardTypes.MONSTER){
-            CreatureCard creatureCard = (CreatureCard) cardInfo;
+    public void SetCardGraphics(){
+        Card cardToShow = this.gameObject.GetComponent<CardInfo>().card;
+
+        if(cardToShow == null)
+        {
+            throw new System.Exception("Card is not set");
+        }
+
+        cardNameGraphic.GetComponentInChildren<Text>().text = cardToShow.CardName;
+        cardDescGraphic.GetComponentInChildren<Text>().text = cardToShow.CardDescription;
+        cardCostGraphic.GetComponentInChildren<Text>().text = cardToShow.CardCost.ToString();
+        cardFlairGraphic.GetComponentInChildren<Text>().text = cardToShow.CardFlair;
+
+        if (cardToShow.CardType == Card.CardTypes.MONSTER)
+        {
+            CreatureCard creatureCard = (CreatureCard)cardToShow;
             cardPowerGraphic.GetComponentInChildren<Text>().text = creatureCard.BaseCreaturePower.ToString();
             //if(cardInfo.cardModified){
             //    cardPowerGraphic.GetComponentInChildren<Text>().text = creatureCard.GetTotalPowerTotal().ToString();
@@ -36,11 +44,12 @@ public class CardGraphics : MonoBehaviour
             //}
         }
 
-        if(cardInfo is SpellCard){
+        if (cardToShow is SpellCard)
+        {
             cardPowerGraphic.SetActive(false);
             cardDefenseGraphic.SetActive(false);
         }
-        
+
     }
 
    

@@ -4,22 +4,30 @@ using UnityEngine;
 
 public class TestCommander : CommanderCard
 {
-    public override int BaseCreaturePower => 5;
+    public override int BaseCreaturePower => 100;
 
     public override int BaseCreatureDefense => 5;
 
     public override int BaseCreatureHealth => 10;
 
-    public override string CardName => throw new System.NotImplementedException();
+    public override string CardName => "Test Commander";
 
-    public override string CardDescription => throw new System.NotImplementedException();
+    public override string CardDescription => "Commander of the deck";
 
-    public override uint CardCost { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    public override uint CardCost { get => 6; set => cardCost = value; }
 
-    public override string CardFlair => throw new System.NotImplementedException();
+    public override string CardFlair => "My Life";
 
     public override bool CanPlayCardOnTarget(GameObject target)
     {
-        throw new System.NotImplementedException();
+        BattleSquare targetBattleSquare = target.GetComponent<BattleSquare>();
+
+        return targetBattleSquare && !targetBattleSquare.IsCreatureOnSquare();
+    }
+
+    public override void PlayCard(GameObject target)
+    {
+        ResetCardValues();
+        base.PlayCard(target);
     }
 }

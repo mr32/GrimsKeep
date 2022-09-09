@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-public abstract class Card : MonoBehaviour
+public abstract class Card
 {
     public abstract string CardName { get; }
     public abstract string CardDescription { get; }
@@ -21,34 +21,51 @@ public abstract class Card : MonoBehaviour
         SQUARE_MODIFIER
     }
 
-    public void Start()
+    public abstract CardTypes CardType { get; }
+
+    public enum CardSource
     {
-        if(!cardCopied)
-            this.gameObject.SendMessage(Constants.SET_CARD_GRAPHICS_FUNCTION_NAME, this);
+        HAND,
+        BATTLE_SQUARE
     }
 
-    public abstract CardTypes CardType { get; }
+    public CardSource cardSource;
 
     public virtual void PlayCard(GameObject target)
     {
         // Assumes CanPlayCardOnTarget and HasEnoughMana are called from an external source
         CardRules(target);
-        CopyCardToTarget(target);
 
-        GameObject.FindGameObjectWithTag(Constants.PLAYER_STAT_GAMEOBJECT_TAG).GetComponent<PlayerStats>().playerMana -= (int)this.CardCost;
-        GameObject.FindGameObjectWithTag(Constants.PLAYER_STAT_GAMEOBJECT_TAG).GetComponent<PlayerStats>().UpdateCardGraphics();
-
-        if (!cardCopied || this.GetComponent<CardMovement>())
+        switch (cardSource)
         {
-            this.gameObject.SendMessage(Constants.CARD_GRAVEYARD_FUNCTION_NAME);
+            case CardSource.HAND:
+                GameObject.FindGameObjectWithTag(Constants.PLAYER_STAT_GAMEOBJECT_TAG).GetComponent<PlayerStats>().playerMana -= (int)this.CardCost;
+                GameObject.FindGameObjectWithTag(Constants.PLAYER_STAT_GAMEOBJECT_TAG).GetComponent<PlayerStats>().UpdateCardGraphics();
+                break;
+            default:
+                break;
         }
+
+        BattleSquare targetBattleSquare = target.GetComponent<BattleSquare>();
+
+        if (targetBattleSquare)
+        {
+            targetBattleSquare.objectPlayed = true;
+            targetBattleSquare.squareOccupied = true;
+            targetBattleSquare.cardsPlayedOnObject.Add(this);
+            cardSource = CardSource.BATTLE_SQUARE;
+        }
+    }
+
+    public override string ToString()
+    {
+        return string.Format("cName: {0} -- cCost: {1}", CardName, CardCost);
     }
 
     public virtual void MoveCard(GameObject target)
     {
         ResetCardValues();
         CardRules(target);
-        CopyCardToTarget(target);
     }
 
     public virtual void ResetCardValues() { }
@@ -59,25 +76,5 @@ public abstract class Card : MonoBehaviour
     public bool HasEnoughMana()
     {
         return (int)this.CardCost <= GameObject.FindGameObjectWithTag(Constants.PLAYER_STAT_GAMEOBJECT_TAG).GetComponent<PlayerStats>().playerMana;
-    }
-
-    public void CopyCardToTarget(GameObject target)
-    {
-        cardCopied = true;
-        Card copiedCard = target.AddComponent(this.GetType()) as Card;
-        CopyClassValues(this, copiedCard);
-    }
-
-    private void CopyClassValues(Card sourceComp, Card targetComp)
-    {
-        FieldInfo[] sourceFields = sourceComp.GetType().GetFields(BindingFlags.Public |
-                                                    BindingFlags.NonPublic |
-                                                    BindingFlags.Instance);
-        int i = 0;
-        for (i = 0; i < sourceFields.Length; i++)
-        {
-            var value = sourceFields[i].GetValue(sourceComp);
-            sourceFields[i].SetValue(targetComp, value);
-        }
     }
 }

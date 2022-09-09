@@ -40,4 +40,10 @@ public class TestCard : CreatureCard
         // If we played it on a BattleSquare and there is no creature on the square
         return targetBattleSquare && !targetBattleSquare.IsCreatureOnSquare();
     }
+
+    public override void PlayCard(GameObject target)
+    {
+        ResetCardValues();
+        base.PlayCard(target);
+    }
 }
