@@ -14,8 +14,9 @@ public class TestSpell : SpellCard
     public override void CardRules(GameObject gameObjectPlayedOn)
     {
         CreatureCard creatureCard = gameObjectPlayedOn.GetComponent<CreatureCard>();
-
-        creatureCard.additionalPowerModifier += creatureModifierAmount;
+        
+        if(creatureCard)
+            creatureCard.additionalPowerModifier += creatureModifierAmount;
     }
 
     public override bool CanPlayCardOnTarget(GameObject target)
