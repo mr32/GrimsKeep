@@ -29,27 +29,32 @@ public class BattleSquarePreview : UserGraphicController
         if (!gameController.activeObject && gameController.battleSquareToPlayOn != null && GameObject.Equals(gameController.battleSquareToPlayOn, this.gameObject) && Input.GetMouseButtonDown(1))
         {
             BattleSquare battleSquare = gameController.battleSquareToPlayOn.GetComponent<BattleSquare>();
-            battleSquarePreviewPane.SetActive(true);
-
-            battleSquarePreviewPane.transform.SetAsLastSibling();
-            battleSquarePreviewPane.transform.position = new Vector3(
-                battleSquare.gameObject.transform.position.x,
-                battleSquare.gameObject.transform.position.y + 100,
-                battleSquare.gameObject.transform.position.z
-            );
-
-
-            foreach (Card card in battleSquare.GetCardsPlayedOnSquare())
+            
+            if(battleSquare.GetCardsPlayedOnSquare().Length > 0)
             {
-                GameObject cardPrefab = Instantiate(battleSquare.cardPrefab);
+                battleSquarePreviewPane.SetActive(true);
 
-                cardPrefab.transform.SetParent(battleSquareContentPane.transform);
-                cardPrefab.transform.localScale = new Vector3(1f, 1f, 1f);
-                cardPrefab.GetComponent<CardMovement>().enabled = false;
+                battleSquarePreviewPane.transform.SetAsLastSibling();
+                battleSquarePreviewPane.transform.position = new Vector3(
+                    battleSquare.gameObject.transform.position.x,
+                    battleSquare.gameObject.transform.position.y + 100,
+                    battleSquare.gameObject.transform.position.z
+                );
 
-                cardPrefab.AddComponent(card.GetType());
+
+                foreach (Card card in battleSquare.GetCardsPlayedOnSquare())
+                {
+                    GameObject cardPrefab = Instantiate(battleSquare.cardPrefab);
+
+                    cardPrefab.transform.SetParent(battleSquareContentPane.transform);
+                    cardPrefab.transform.localScale = new Vector3(1f, 1f, 1f);
+                    cardPrefab.GetComponent<CardMovement>().enabled = false;
+
+                    cardPrefab.AddComponent(card.GetType());
+                }
+                userGraphicsUp = true;
             }
-            userGraphicsUp = true;
+           
         }
     }
     public override bool ResetCondition()
