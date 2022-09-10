@@ -4540,7 +4540,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealth: 20
-  playerMana: 20
+  playerMana: 9
 --- !u!114 &2101165043
 MonoBehaviour:
   m_ObjectHideFlags: 0
