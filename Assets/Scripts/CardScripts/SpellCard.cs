@@ -6,7 +6,6 @@ public abstract class SpellCard : Card
 {
     public bool cardApplied = false;
     public override CardTypes CardType => CardTypes.SPELL;
-
     public override void PlayCard(GameObject target)
     {
         cardApplied = true;

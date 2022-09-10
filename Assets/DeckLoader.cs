@@ -12,12 +12,20 @@ public class DeckLoader : MonoBehaviour
     public List<string> deck = new List<string>();
 
     void Awake(){
-        UnityEngine.Object[] cardsForTesting = Resources.LoadAll("Cards");
-        for(int i = 0; i < 3; i++){
-            foreach(var c in cardsForTesting){
-                deck.Add(c.name);
-            }
-        }
+        //UnityEngine.Object[] cardsForTesting = Resources.LoadAll("Cards");
+        //for(int i = 0; i < 3; i++){
+        //    foreach(var c in cardsForTesting){
+        //        deck.Add(c.name);
+        //    }
+        //}
+
+        deck.Add("TestCard");
+        deck.Add("TestCard");
+        deck.Add("TestCard");
+        deck.Add("TestSpell");
+        deck.Add("TestSpell");
+        deck.Add("TestCommander");
+
         // deck = new List<string>(){
         //     CardNames.TEST_CARD,
         //     CardNames.TEST_CARD,
@@ -33,8 +41,10 @@ public class DeckLoader : MonoBehaviour
             GameObject card = Instantiate(cardPrefab);
             card.transform.SetParent(playerHand);
             card.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-            card.GetComponent<CardInfo>().card = (Card)Activator.CreateInstance(System.Type.GetType(cardName));
-            card.GetComponent<CardInfo>().card.cardSource = Card.CardSource.HAND;
+            CardInfo cardInfo = card.GetComponent<CardInfo>();
+            cardInfo.card = (Card)Activator.CreateInstance(System.Type.GetType(cardName));
+            cardInfo.card.cardSource = Card.CardSource.HAND;
+            cardInfo.card.parentGameobject = card;
             card.GetComponent<CardGraphics>().SetCardGraphics();
         }
     }

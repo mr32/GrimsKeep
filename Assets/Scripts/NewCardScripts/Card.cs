@@ -30,6 +30,7 @@ public abstract class Card
     }
 
     public CardSource cardSource;
+    public GameObject parentGameobject;
 
     public virtual void PlayCard(GameObject target)
     {
@@ -54,6 +55,11 @@ public abstract class Card
             targetBattleSquare.squareOccupied = true;
             targetBattleSquare.cardsPlayedOnObject.Add(this);
             cardSource = CardSource.BATTLE_SQUARE;
+        }
+        
+        if(parentGameobject != null)
+        {
+            GameObject.Destroy(parentGameobject);
         }
     }
 
