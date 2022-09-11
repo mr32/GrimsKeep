@@ -45,6 +45,7 @@ public class DeckLoader : MonoBehaviour
             cardInfo.card = (Card)Activator.CreateInstance(System.Type.GetType(cardName));
             cardInfo.card.cardSource = Card.CardSource.HAND;
             cardInfo.card.parentGameobject = card;
+            cardInfo.card.battleBoard = GameObject.FindGameObjectWithTag(Constants.BATTLE_BOARD_TAG);
             card.GetComponent<CardGraphics>().SetCardGraphics();
         }
     }

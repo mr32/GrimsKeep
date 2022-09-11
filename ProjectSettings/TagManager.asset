@@ -20,6 +20,9 @@ TagManager:
   - BattleSquareContentPane
   - BattleSquareAttack
   - BattleSquareDefense
+  - Card
+  - BattleSquare
+  - BattleBoard
   layers:
   - Default
   - TransparentFX

@@ -23,4 +23,13 @@ public static class Utils
         return child;
     }
 
+    public static int CalculateSiblingIndex(int x, int y)
+    {
+        return x * Constants.BOARD_WIDTH + y;
+    }
+
+    public static (int row, int col) GetRowAndColIndex(int siblingIndex)
+    {
+        return (siblingIndex / Constants.BOARD_WIDTH, siblingIndex % Constants.BOARD_WIDTH);
+    }
 }

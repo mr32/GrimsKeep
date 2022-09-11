@@ -32,10 +32,12 @@ public abstract class Card
     public CardSource cardSource;
     public GameObject parentGameobject;
 
+    public GameObject battleBoard;
+
     public virtual void PlayCard(GameObject target)
     {
         // Assumes CanPlayCardOnTarget and HasEnoughMana are called from an external source
-        CardRules(target);
+        OnPlayConditions(target);
 
         switch (cardSource)
         {
@@ -49,18 +51,9 @@ public abstract class Card
 
         BattleSquare targetBattleSquare = target.GetComponent<BattleSquare>();
 
-        if (targetBattleSquare)
-        {
-            targetBattleSquare.objectPlayed = true;
-            targetBattleSquare.squareOccupied = true;
-            targetBattleSquare.cardsPlayedOnObject.Add(this);
-            cardSource = CardSource.BATTLE_SQUARE;
-        }
-        
-        if(parentGameobject != null)
-        {
-            GameObject.Destroy(parentGameobject);
-        }
+        OccupyBattleSquare(targetBattleSquare);
+
+        DiscardCard();
     }
 
     public override string ToString()
@@ -71,13 +64,33 @@ public abstract class Card
     public virtual void MoveCard(GameObject target)
     {
         ResetCardValues();
-        CardRules(target);
+        OnPlayConditions(target);
     }
 
     public virtual void ResetCardValues() { }
 
-    public virtual void CardRules(GameObject target) { }
+    public virtual void OnPlayConditions(GameObject target) { }
+    public virtual void OnBoardConditions() { }
     public abstract bool CanPlayCardOnTarget(GameObject target);
+
+    private void DiscardCard()
+    {
+        if(parentGameobject != null)
+        {
+            GameObject.Destroy(parentGameobject);
+        }
+    }
+
+    private void OccupyBattleSquare(BattleSquare target)
+    {
+        if (target)
+        {
+            target.objectPlayed = true;
+            target.squareOccupied = true;
+            target.cardsPlayedOnObject.Add(this);
+            cardSource = CardSource.BATTLE_SQUARE;
+        }
+    }
 
     public bool HasEnoughMana()
     {
