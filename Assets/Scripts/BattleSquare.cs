@@ -16,6 +16,8 @@ public class BattleSquare : HoverableObject
     private GameObject battleSquareAttackGraphic;
     private GameObject battleSquareDefenseGraphic;
 
+    private GameManager gameManager;
+
     private GameObject battlePlaySquare;
 
     public bool objectPlayed = false;
@@ -38,6 +40,7 @@ public class BattleSquare : HoverableObject
         battleSquareDefenseGraphic.SetActive(false);
 
         gameController = GameObject.FindGameObjectWithTag(Constants.GAME_CONTROLLER_TAG).GetComponent<GameController>();
+        gameManager = GameObject.FindGameObjectWithTag(Constants.GAME_MANAGER_TAG).GetComponent<GameManager>();
         orderInColumn = this.transform.GetSiblingIndex();
 
         (row, col) = Utils.GetRowAndColIndex(orderInColumn);

@@ -28,12 +28,12 @@ public class TestCard : CreatureCard
 
         if(battleSquare != null && battleSquare.col == 0)
         {
-            if (!cardModifiers.ContainsKey(CardType))
-            {
-                cardModifiers.Add(CardType, 0);
-            }
+            Utils.AddToCardModifiers(
+                cardModifierDictionary: cardModifiers,
+                cardToAdd: this,
+                valueToAdd: modifyAmount
+            );
 
-            cardModifiers[CardType] += modifyAmount;
             cardModified = true;
         }
     }

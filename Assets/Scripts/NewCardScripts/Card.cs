@@ -40,7 +40,7 @@ public abstract class Card
 
     public CardOwner cardOwner;
 
-    public Dictionary<CardTypes, int> cardModifiers = new Dictionary<CardTypes, int>();
+    public Dictionary<CardTypes, Dictionary<string, int>> cardModifiers = new Dictionary<CardTypes, Dictionary<string, int>>();
     public GameObject parentGameobject;
 
     public GameObject battleBoard;

@@ -39,8 +39,12 @@ public class TestCommander : CommanderCard
             {
                 if(creature != this)
                 {
-                    if (creature.cardModifiers.ContainsKey(CardType)) { continue; }
-                    creature.cardModifiers.Add(CardType, 10);
+                    Utils.AddToCardModifiers(
+                        cardModifierDictionary: creature.cardModifiers,
+                        cardToAdd: this,
+                        valueToAdd: 10
+                    );
+                    creature.cardModified = true;
                     battleSquare.UpdateAttackAndDefenseGraphics();
                 }
             }

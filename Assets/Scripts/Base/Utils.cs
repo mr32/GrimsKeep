@@ -53,4 +53,25 @@ public static class Utils
 
         return cardObject;
     }
+
+    public static void AddToCardModifiers(Dictionary<Card.CardTypes, Dictionary<string, int>> cardModifierDictionary, Card cardToAdd, int valueToAdd)
+    {
+        // Only have 1 commander modifier per card
+        if(cardToAdd.CardType == Card.CardTypes.COMMANDER && cardModifierDictionary.ContainsKey(Card.CardTypes.COMMANDER)) { return; }
+        // If the dictionary doesnt have the General Card Type, then it doesnt have the cardToAdd
+        if (!cardModifierDictionary.ContainsKey(cardToAdd.CardType))
+        {
+            cardModifierDictionary.Add(cardToAdd.CardType, new Dictionary<string, int>() { { cardToAdd.GetType().Name, valueToAdd } });
+            return;
+        }
+
+        // If the dictionary doesnt have the Specific Card in the dictionary
+        if (!cardModifierDictionary[cardToAdd.CardType].ContainsKey(cardToAdd.GetType().Name))
+        {
+            cardModifierDictionary[cardToAdd.CardType].Add(cardToAdd.GetType().Name, valueToAdd);
+            return;
+        }
+
+        cardModifierDictionary[cardToAdd.CardType][cardToAdd.GetType().Name] += valueToAdd;
+    }
 }

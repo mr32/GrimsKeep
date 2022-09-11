@@ -32,7 +32,10 @@ public abstract class CreatureCard : Card
 
         foreach(var item in cardModifiers)
         {
-            total += item.Value;
+            foreach(var inner_item in cardModifiers[item.Key])
+            {
+                total += inner_item.Value;
+            }
         }
 
         return total;
@@ -76,14 +79,14 @@ public abstract class CreatureCard : Card
         }
     }
 
-    public override void OnBoardConditions()
-    {
-        CommanderCard commanderCard = GetCommanderCard();
+    //public override void OnBoardConditions()
+    //{
+    //    CommanderCard commanderCard = GetCommanderCard();
 
-        if(commanderCard != null)
-        {
-            commanderCard.OnBoardConditions();
-        }
-    }
+    //    if(commanderCard != null)
+    //    {
+    //        commanderCard.OnBoardConditions();
+    //    }
+    //}
 
 }

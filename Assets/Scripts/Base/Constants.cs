@@ -25,6 +25,8 @@ public static class Constants
     public static string BATTLE_SQUARE_PREVIEW_CONTENT_PANE_TAG = "BattleSquareContentPane";
     public static string CARD_INFO_ID = "CardInfo";
 
+    public static string GAME_MANAGER_TAG = "GameManager";
+
 
     public static int BOARD_WIDTH = 5;
 }
