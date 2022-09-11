@@ -37,17 +37,10 @@ public class BattleSquare : HoverableObject
         battleSquareAttackGraphic.SetActive(false);
         battleSquareDefenseGraphic.SetActive(false);
 
-        row = this.gameObject.transform.GetSiblingIndex() / Constants.BOARD_WIDTH;
-        col = this.gameObject.transform.GetSiblingIndex() % Constants.BOARD_WIDTH;
-
-        // To get child sibling index
-        // i = row * Constants.BOARD_WIDTH + col
-
-    }
-
-    void Start(){
         gameController = GameObject.FindGameObjectWithTag(Constants.GAME_CONTROLLER_TAG).GetComponent<GameController>();
         orderInColumn = this.transform.GetSiblingIndex();
+
+        (row, col) = Utils.GetRowAndColIndex(orderInColumn);
     }
 
     void Update(){
@@ -109,11 +102,6 @@ public class BattleSquare : HoverableObject
         gameController.userGraphicsUp = true;
     }
 
-    private int CalculateSiblingIndex(int x, int y)
-    {
-        return x * Constants.BOARD_WIDTH + y;
-    }
-
     private void LightUpMoveSquares(CreatureCard.MoveDirections[] possibleMoveDirections)
     {
         foreach(CreatureCard.MoveDirections move in possibleMoveDirections)
@@ -123,49 +111,49 @@ public class BattleSquare : HoverableObject
                 case CreatureCard.MoveDirections.UP:
                     if(IsValidBoardSquare(row - 1, col))
                     {
-                        ColorSquare(CalculateSiblingIndex(row - 1, col), Color.green);
+                        ColorSquare(Utils.CalculateSiblingIndex(row - 1, col), Color.green);
                     }
                     break;
                 case CreatureCard.MoveDirections.DOWN:
                     if (IsValidBoardSquare(row + 1, col))
                     {
-                        ColorSquare(CalculateSiblingIndex(row + 1, col), Color.green);
+                        ColorSquare(Utils.CalculateSiblingIndex(row + 1, col), Color.green);
                     }
                     break;
                 case CreatureCard.MoveDirections.LEFT:
                     if (IsValidBoardSquare(row, col - 1))
                     {
-                        ColorSquare(CalculateSiblingIndex(row, col - 1), Color.green);
+                        ColorSquare(Utils.CalculateSiblingIndex(row, col - 1), Color.green);
                     }
                     break;
                 case CreatureCard.MoveDirections.RIGHT:
                     if (IsValidBoardSquare(row, col + 1))
                     {
-                        ColorSquare(CalculateSiblingIndex(row, col + 1), Color.green);
+                        ColorSquare(Utils.CalculateSiblingIndex(row, col + 1), Color.green);
                     }
                     break;
                 case CreatureCard.MoveDirections.TOP_LEFT:
                     if (IsValidBoardSquare(row - 1, col - 1))
                     {
-                        ColorSquare(CalculateSiblingIndex(row - 1, col - 1), Color.green);
+                        ColorSquare(Utils.CalculateSiblingIndex(row - 1, col - 1), Color.green);
                     }
                     break;
                 case CreatureCard.MoveDirections.TOP_RIGHT:
                     if (IsValidBoardSquare(row - 1, col + 1))
                     {
-                        ColorSquare(CalculateSiblingIndex(row - 1, col + 1), Color.green);
+                        ColorSquare(Utils.CalculateSiblingIndex(row - 1, col + 1), Color.green);
                     }
                     break;
                 case CreatureCard.MoveDirections.BOTTOM_LEFT:
                     if (IsValidBoardSquare(row + 1, col - 1))
                     {
-                        ColorSquare(CalculateSiblingIndex(row + 1, col - 1), Color.green);
+                        ColorSquare(Utils.CalculateSiblingIndex(row + 1, col - 1), Color.green);
                     }
                     break;
                 case CreatureCard.MoveDirections.BOTTOM_RIGHT:
                     if (IsValidBoardSquare(row + 1, col + 1))
                     {
-                        ColorSquare(CalculateSiblingIndex(row + 1, col + 1), Color.green);
+                        ColorSquare(Utils.CalculateSiblingIndex(row + 1, col + 1), Color.green);
                     }
                     break;
                 default:

@@ -10,7 +10,7 @@ public class TestSpell : SpellCard
     public override string CardFlair => "Cool Test Spell!";
     public int creatureModifierAmount = 5;
     public override CardTypes CardType => CardTypes.SQUARE_MODIFIER;
-    public override void CardRules(GameObject gameObjectPlayedOn)
+    public override void OnPlayConditions(GameObject gameObjectPlayedOn)
     {
         BattleSquare battleSquare = gameObjectPlayedOn.GetComponent<BattleSquare>();
 

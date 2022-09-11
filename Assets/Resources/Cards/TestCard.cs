@@ -22,7 +22,7 @@ public class TestCard : CreatureCard
 
     public override int BaseCreatureHealth => 2;
 
-    public override void CardRules(GameObject target)
+    public override void OnPlayConditions(GameObject target)
     {
         BattleSquare battleSquare = target.GetComponent<BattleSquare>();
 
