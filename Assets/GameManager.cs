@@ -24,10 +24,14 @@ public class GameManager : MonoBehaviour
     {
         foreach(BattleSquare battleSquare in battleBoard.GetComponentsInChildren<BattleSquare>())
         {
-            foreach(Card c in battleSquare.cardsPlayedOnObject)
+            if(battleSquare.cardsPlayedOnObject.Count > 0)
             {
-                c.OnBoardConditions();
+                foreach (Card c in battleSquare.cardsPlayedOnObject)
+                {
+                    c.OnBoardConditions();
+                }
             }
+            
         }
     }
 }

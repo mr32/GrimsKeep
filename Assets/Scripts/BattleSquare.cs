@@ -77,6 +77,7 @@ public class BattleSquare : HoverableObject
                     UpdateAttackAndDefenseGraphics();
                     objectPlayed = false;
                     cardsPlayedOnObject = cardsPlayedOnObject.OrderBy(card => (int)(card.CardType)).ToList();
+                    gameManager.cardPlayed = true;
                 }                
             }
             else
@@ -238,6 +239,11 @@ public class BattleSquare : HoverableObject
         return GetCardsPlayedByType(Card.CardTypes.SQUARE_MODIFIER).Count > 0;
     }
 
+    public bool AnyEnemyCardsOnSquare()
+    {
+        return cardsPlayedOnObject.Where(card => card is CreatureCard && card.cardOwner == Card.CardOwner.ENEMY).ToList().Count > 0;
+    }
+
     public void UpdateAttackAndDefenseGraphics()
     {
         battleSquareAttackGraphic.SetActive(true);
@@ -245,7 +251,7 @@ public class BattleSquare : HoverableObject
 
         battleSquareAttackGraphic.GetComponentInChildren<Text>().text = CalculateSquarePowerTotals().ToString();
 
-        this.GetComponent<Image>().color = Color.red;
+        this.GetComponent<Image>().color = AnyEnemyCardsOnSquare() ? Color.red : Color.black;
 
         if (AnyCreatureModifiedOnSquare())
         {

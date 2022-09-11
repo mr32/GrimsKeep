@@ -36,9 +36,10 @@ public class DeckLoader : MonoBehaviour
     void Start()
     {
         playerHand = GameObject.FindGameObjectWithTag(Constants.HAND_AREA_TAG).transform;
+        bool testBool = false;
 
         foreach(string cardName in deck){
-            Utils.CreateCardGameObject(
+            GameObject cardMade = Utils.CreateCardGameObject(
                 cardPrefab: cardPrefab,
                 parent: playerHand,
                 card: (Card)Activator.CreateInstance(Type.GetType(cardName)),
@@ -46,7 +47,13 @@ public class DeckLoader : MonoBehaviour
                 cardPlayedFrom: Card.CardPlayedFrom.HAND,
                 cardOwner: Card.CardOwner.SELF
             );
+            if (!testBool)
+            {
+                cardMade.GetComponent<CardInfo>().card.cardOwner = Card.CardOwner.ENEMY;
+                testBool = true;
+            }
         }
+
     }
 
     // Update is called once per frame

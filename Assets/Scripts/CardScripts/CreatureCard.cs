@@ -78,15 +78,4 @@ public abstract class CreatureCard : Card
             }
         }
     }
-
-    //public override void OnBoardConditions()
-    //{
-    //    CommanderCard commanderCard = GetCommanderCard();
-
-    //    if(commanderCard != null)
-    //    {
-    //        commanderCard.OnBoardConditions();
-    //    }
-    //}
-
 }

@@ -37,7 +37,7 @@ public class TestCommander : CommanderCard
         {
             foreach(CreatureCard creature in battleSquare.GetCreatureCardsPlayedOnSquare())
             {
-                if(creature != this)
+                if(creature != this && creature.cardOwner == cardOwner)
                 {
                     Utils.AddToCardModifiers(
                         cardModifierDictionary: creature.cardModifiers,
