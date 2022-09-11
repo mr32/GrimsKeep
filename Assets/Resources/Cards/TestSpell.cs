@@ -10,13 +10,14 @@ public class TestSpell : SpellCard
     public override string CardFlair => "Cool Test Spell!";
     public int creatureModifierAmount = 5;
     public override CardTypes CardType => CardTypes.SQUARE_MODIFIER;
+
     public override void OnPlayConditions(GameObject gameObjectPlayedOn)
     {
         BattleSquare battleSquare = gameObjectPlayedOn.GetComponent<BattleSquare>();
 
         foreach(CreatureCard creatureCard in battleSquare.GetCreatureCardsPlayedOnSquare())
         {
-            ApplyToCreature(creatureCard);
+            ApplyToTarget(creatureCard);
         }
     }
 
@@ -28,9 +29,19 @@ public class TestSpell : SpellCard
         return targetBattleSquare && targetBattleSquare.IsCreatureOnSquare();
     }
 
-    public override void ApplyToCreature(CreatureCard c)
+    public override void ApplyToTarget(Card targetedCard)
     {
-        c.additionalPowerModifier += creatureModifierAmount;
-        c.cardModified = true;
+        if(targetedCard is CreatureCard c)
+        {
+            c.additionalPowerModifier += creatureModifierAmount;
+            c.cardModified = true;
+
+            if (!c.cardModifiers.ContainsKey(CardType))
+            {
+                c.cardModifiers.Add(CardType, 0);
+            }
+
+            c.cardModifiers[CardType] += creatureModifierAmount;
+        } 
     }
 }

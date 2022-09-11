@@ -30,13 +30,24 @@ public abstract class CreatureCard : Card
     public abstract MoveDirections[] moveDirections { get; } 
 
     public int GetTotalPowerTotal(){
-        return BaseCreaturePower + powerModifier + additionalPowerModifier;
+        int total = BaseCreaturePower;
+
+        foreach(var item in cardModifiers)
+        {
+            total += item.Value;
+        }
+
+        return total;
     }
 
     public override void ResetCardValues()
     {
-        powerModifier = 0;
-        additionalPowerModifier = 0;
+        List<CardTypes> cardTypesToExcludeFromRemoval = new List<CardTypes> { CardTypes.COMMANDER };
+        var keysToRemove = cardModifiers.Keys.Except(cardTypesToExcludeFromRemoval).ToList();
+        foreach(var key in keysToRemove)
+        {
+            cardModifiers.Remove(key);
+        }
         cardModified = false;
     }
 
@@ -54,10 +65,20 @@ public abstract class CreatureCard : Card
 
         if (battleSquare)
         {
-            foreach(SpellCard spellCard in battleSquare.GetFilteredCardsPlayedOnSquare(CardTypes.SQUARE_MODIFIER))
+            foreach(SpellCard spellCard in battleSquare.GetCardsPlayedByType(CardTypes.SQUARE_MODIFIER))
             {
-                spellCard.ApplyToCreature(this);
+                spellCard.ApplyToTarget(this);
             }
+        }
+    }
+
+    public override void OnBoardConditions()
+    {
+        CommanderCard commanderCard = GetCommanderCard();
+
+        if(commanderCard != null)
+        {
+            commanderCard.OnBoardConditions();
         }
     }
 

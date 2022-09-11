@@ -17,8 +17,8 @@ public abstract class Card
     {
         MONSTER,
         SPELL,
-        CREATURE_MODIFIER,
-        SQUARE_MODIFIER
+        SQUARE_MODIFIER,
+        COMMANDER
     }
 
     public abstract CardTypes CardType { get; }
@@ -30,12 +30,17 @@ public abstract class Card
     }
 
     public CardSource cardSource;
+
+    public Dictionary<CardTypes, int> cardModifiers = new Dictionary<CardTypes, int>();
     public GameObject parentGameobject;
 
     public GameObject battleBoard;
 
     public virtual void PlayCard(GameObject target)
     {
+        // Remove any square modifiers
+        cardModifiers.Remove(CardTypes.SQUARE_MODIFIER);
+
         // Assumes CanPlayCardOnTarget and HasEnoughMana are called from an external source
         OnPlayConditions(target);
 
@@ -52,6 +57,8 @@ public abstract class Card
         BattleSquare targetBattleSquare = target.GetComponent<BattleSquare>();
 
         OccupyBattleSquare(targetBattleSquare);
+
+        OnBoardConditions();
 
         DiscardCard();
     }
@@ -95,5 +102,17 @@ public abstract class Card
     public bool HasEnoughMana()
     {
         return (int)this.CardCost <= GameObject.FindGameObjectWithTag(Constants.PLAYER_STAT_GAMEOBJECT_TAG).GetComponent<PlayerStats>().playerMana;
+    }
+
+    public CommanderCard GetCommanderCard()
+    {
+        foreach(BattleSquare battleSquare in battleBoard.GetComponentsInChildren<BattleSquare>())
+        {
+            if (battleSquare.IsCommanderOnSquare())
+            {
+                return battleSquare.GetCommanderCard();
+            }
+        }
+        return null;
     }
 }

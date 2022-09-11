@@ -15,4 +15,6 @@ public abstract class CommanderCard : CreatureCard
         MoveDirections.TOP_LEFT,
         MoveDirections.TOP_RIGHT
     };
+
+    public override CardTypes CardType => CardTypes.COMMANDER;
 }

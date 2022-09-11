@@ -77,7 +77,7 @@ public class BattleSquare : HoverableObject
             }
             else
             {
-                CreatureCard.MoveDirections[] moves = GetFilteredCardsPlayedOnSquare(Card.CardTypes.MONSTER).SelectMany(x => ((CreatureCard)x).moveDirections).ToArray().Distinct().Cast<CreatureCard.MoveDirections>().ToArray();
+                CreatureCard.MoveDirections[] moves = GetCreatureCardsPlayedOnSquare().SelectMany(x => ((CreatureCard)x).moveDirections).ToArray().Distinct().Cast<CreatureCard.MoveDirections>().ToArray();
                 LightUpMoveSquares(moves);
                 PickUpCardsOnSquare();
             }
@@ -196,7 +196,7 @@ public class BattleSquare : HoverableObject
 
     public List<Card> GetCreatureCardsPlayedOnSquare()
     {
-        return cardsPlayedOnObject.Where(card => card.CardType == Card.CardTypes.MONSTER).ToList();
+        return cardsPlayedOnObject.Where(card => card is CreatureCard).ToList();
     }
 
     public List<Card> GetMovableCardsPlayedOnSquare()
@@ -204,7 +204,7 @@ public class BattleSquare : HoverableObject
         return cardsPlayedOnObject.Where(card => card.CardType != Card.CardTypes.SQUARE_MODIFIER).ToList();
     }
 
-    public List<Card> GetFilteredCardsPlayedOnSquare(Card.CardTypes cardType)
+    public List<Card> GetCardsPlayedByType(Card.CardTypes cardType)
     {
         return cardsPlayedOnObject.Where(card => card.CardType == cardType).ToList();
     }
@@ -212,7 +212,7 @@ public class BattleSquare : HoverableObject
     public int CalculateSquarePowerTotals()
     {
         int total = 0;
-        List<Card> creatureList = GetFilteredCardsPlayedOnSquare(Card.CardTypes.MONSTER);
+        List<Card> creatureList = GetCreatureCardsPlayedOnSquare();
         foreach(CreatureCard creatureCard in creatureList)
         {
             total += creatureCard.GetTotalPowerTotal();
@@ -226,15 +226,15 @@ public class BattleSquare : HoverableObject
 
     private bool AnyCreatureModifiedOnSquare()
     {
-        return GetFilteredCardsPlayedOnSquare(Card.CardTypes.MONSTER).Where(card => ((CreatureCard)card).cardModified == true).ToArray().Length > 0;
+        return GetCardsPlayedByType(Card.CardTypes.MONSTER).Where(card => ((CreatureCard)card).cardModified == true).ToArray().Length > 0;
     }
 
     public bool AnySquareModifiers()
     {
-        return GetFilteredCardsPlayedOnSquare(Card.CardTypes.SQUARE_MODIFIER).Count > 0;
+        return GetCardsPlayedByType(Card.CardTypes.SQUARE_MODIFIER).Count > 0;
     }
 
-    private void UpdateAttackAndDefenseGraphics()
+    public void UpdateAttackAndDefenseGraphics()
     {
         battleSquareAttackGraphic.SetActive(true);
         battleSquareDefenseGraphic.SetActive(true);
@@ -252,6 +252,16 @@ public class BattleSquare : HoverableObject
         battleSquareDefenseGraphic.GetComponentInChildren<Text>().text = 0.ToString();
     }
 
+    public CommanderCard GetCommanderCard()
+    {
+        return cardsPlayedOnObject.Single(card => card is CommanderCard) as CommanderCard;
+    }
+
+    public bool IsCommanderOnSquare()
+    {
+        return cardsPlayedOnObject.Where(card => card is CommanderCard).ToList().Count > 0;
+    }
+
     public void ResetBattleSquareToDefaultState(bool fullReset)
     {
         battleSquareAttackGraphic.GetComponentInChildren<Text>().text = 0.ToString();
@@ -265,10 +275,10 @@ public class BattleSquare : HoverableObject
         }
         else
         {
-            cardsPlayedOnObject = GetFilteredCardsPlayedOnSquare(Card.CardTypes.SQUARE_MODIFIER);
+            cardsPlayedOnObject = GetCardsPlayedByType(Card.CardTypes.SQUARE_MODIFIER);
         }
 
-        foreach(Card card in GetFilteredCardsPlayedOnSquare(Card.CardTypes.SQUARE_MODIFIER))
+        foreach(Card card in GetCardsPlayedByType(Card.CardTypes.SQUARE_MODIFIER))
         {
             ((SpellCard)card).cardApplied = false;
         }

@@ -28,7 +28,12 @@ public class TestCard : CreatureCard
 
         if(battleSquare != null && battleSquare.col == 0)
         {
-            powerModifier = modifyAmount;
+            if (!cardModifiers.ContainsKey(CardType))
+            {
+                cardModifiers.Add(CardType, 0);
+            }
+
+            cardModifiers[CardType] += modifyAmount;
             cardModified = true;
         }
     }

@@ -34,10 +34,9 @@ public class CardGraphics : MonoBehaviour
         cardCostGraphic.GetComponentInChildren<Text>().text = cardToShow.CardCost.ToString();
         cardFlairGraphic.GetComponentInChildren<Text>().text = cardToShow.CardFlair;
 
-        if (cardToShow.CardType == Card.CardTypes.MONSTER)
+        if (cardToShow is CreatureCard c)
         {
-            CreatureCard creatureCard = (CreatureCard)cardToShow;
-            cardPowerGraphic.GetComponentInChildren<Text>().text = creatureCard.BaseCreaturePower.ToString();
+            cardPowerGraphic.GetComponentInChildren<Text>().text = c.BaseCreaturePower.ToString();
             //if(cardInfo.cardModified){
             //    cardPowerGraphic.GetComponentInChildren<Text>().text = creatureCard.GetTotalPowerTotal().ToString();
             //    cardPowerGraphic.GetComponentInChildren<Text>().color = Color.green;

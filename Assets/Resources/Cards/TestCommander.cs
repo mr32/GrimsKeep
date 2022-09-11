@@ -30,4 +30,20 @@ public class TestCommander : CommanderCard
         ResetCardValues();
         base.PlayCard(target);
     }
+
+    public override void OnBoardConditions()
+    {
+        foreach(BattleSquare battleSquare in battleBoard.GetComponentsInChildren<BattleSquare>())
+        {
+            foreach(CreatureCard creature in battleSquare.GetCreatureCardsPlayedOnSquare())
+            {
+                if(creature != this)
+                {
+                    if (creature.cardModifiers.ContainsKey(CardType)) { continue; }
+                    creature.cardModifiers.Add(CardType, 10);
+                    battleSquare.UpdateAttackAndDefenseGraphics();
+                }
+            }
+        }
+    }
 }
