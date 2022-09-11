@@ -73,6 +73,7 @@ public class BattleSquare : HoverableObject
                 {
                     UpdateAttackAndDefenseGraphics();
                     objectPlayed = false;
+                    cardsPlayedOnObject = cardsPlayedOnObject.OrderBy(card => (int)(card.CardType)).ToList();
                 }                
             }
             else
@@ -226,7 +227,7 @@ public class BattleSquare : HoverableObject
 
     private bool AnyCreatureModifiedOnSquare()
     {
-        return GetCardsPlayedByType(Card.CardTypes.MONSTER).Where(card => ((CreatureCard)card).cardModified == true).ToArray().Length > 0;
+        return cardsPlayedOnObject.Where(card => card is CreatureCard && ((CreatureCard)card).cardModified).ToList().Count > 0;
     }
 
     public bool AnySquareModifiers()

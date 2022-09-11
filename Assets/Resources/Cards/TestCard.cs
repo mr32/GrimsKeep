@@ -48,7 +48,7 @@ public class TestCard : CreatureCard
 
     public override void PlayCard(GameObject target)
     {
-        ResetCardValues();
+        SoftResetCardValues();
         base.PlayCard(target);
     }
 }

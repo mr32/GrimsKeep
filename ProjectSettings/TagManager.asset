@@ -23,6 +23,7 @@ TagManager:
   - Card
   - BattleSquare
   - BattleBoard
+  - UIPanel
   layers:
   - Default
   - TransparentFX

@@ -38,15 +38,14 @@ public class DeckLoader : MonoBehaviour
         playerHand = GameObject.FindGameObjectWithTag(Constants.HAND_AREA_TAG).transform;
 
         foreach(string cardName in deck){
-            GameObject card = Instantiate(cardPrefab);
-            card.transform.SetParent(playerHand);
-            card.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-            CardInfo cardInfo = card.GetComponent<CardInfo>();
-            cardInfo.card = (Card)Activator.CreateInstance(System.Type.GetType(cardName));
-            cardInfo.card.cardSource = Card.CardSource.HAND;
-            cardInfo.card.parentGameobject = card;
-            cardInfo.card.battleBoard = GameObject.FindGameObjectWithTag(Constants.BATTLE_BOARD_TAG);
-            card.GetComponent<CardGraphics>().SetCardGraphics();
+            Utils.CreateCardGameObject(
+                cardPrefab: cardPrefab,
+                parent: playerHand,
+                card: (Card)Activator.CreateInstance(Type.GetType(cardName)),
+                scale: new Vector3(0.5f, 0.5f, 0.5f),
+                cardPlayedFrom: Card.CardPlayedFrom.HAND,
+                cardOwner: Card.CardOwner.SELF
+            );
         }
     }
 

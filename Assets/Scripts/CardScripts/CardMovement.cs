@@ -18,7 +18,7 @@ public class CardMovement : HoverableObject
     void Start()
     {
         hand = GameObject.FindGameObjectWithTag(Constants.HAND_AREA_TAG);
-        UICanvas = this.gameObject.GetComponentInParent<Canvas>().transform;
+        UICanvas = GameObject.FindGameObjectWithTag("UIPanel").transform;
         placeInHand = this.transform.GetSiblingIndex();
         cardPreviewArea = GameObject.FindGameObjectWithTag(Constants.CARD_PREVIEW_TAG);
         originalScale = this.transform.localScale;

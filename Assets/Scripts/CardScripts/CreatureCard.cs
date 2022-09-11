@@ -11,8 +11,6 @@ public abstract class CreatureCard : Card
     public abstract int BaseCreatureHealth { get; }
     public override CardTypes CardType => CardTypes.MONSTER;
 
-    public int powerModifier = 0;
-    public int additionalPowerModifier = 0;
     public bool cardModified;
 
     public enum MoveDirections
@@ -40,7 +38,7 @@ public abstract class CreatureCard : Card
         return total;
     }
 
-    public override void ResetCardValues()
+    public override void SoftResetCardValues()
     {
         List<CardTypes> cardTypesToExcludeFromRemoval = new List<CardTypes> { CardTypes.COMMANDER };
         var keysToRemove = cardModifiers.Keys.Except(cardTypesToExcludeFromRemoval).ToList();
@@ -48,6 +46,12 @@ public abstract class CreatureCard : Card
         {
             cardModifiers.Remove(key);
         }
+        cardModified = cardModifiers.Count > 0;
+    }
+
+    public override void HardResetCardValues()
+    {
+        base.HardResetCardValues();
         cardModified = false;
     }
 

@@ -37,10 +37,11 @@ public class CardGraphics : MonoBehaviour
         if (cardToShow is CreatureCard c)
         {
             cardPowerGraphic.GetComponentInChildren<Text>().text = c.BaseCreaturePower.ToString();
-            //if(cardInfo.cardModified){
-            //    cardPowerGraphic.GetComponentInChildren<Text>().text = creatureCard.GetTotalPowerTotal().ToString();
-            //    cardPowerGraphic.GetComponentInChildren<Text>().color = Color.green;
-            //}
+            if (c.cardModified)
+            {
+                cardPowerGraphic.GetComponentInChildren<Text>().text = c.GetTotalPowerTotal().ToString();
+                cardPowerGraphic.GetComponentInChildren<Text>().color = Color.green;
+            }
         }
 
         if (cardToShow is SpellCard)

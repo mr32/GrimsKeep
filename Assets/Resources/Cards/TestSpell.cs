@@ -33,15 +33,13 @@ public class TestSpell : SpellCard
     {
         if(targetedCard is CreatureCard c)
         {
-            c.additionalPowerModifier += creatureModifierAmount;
-            c.cardModified = true;
-
             if (!c.cardModifiers.ContainsKey(CardType))
             {
                 c.cardModifiers.Add(CardType, 0);
             }
 
             c.cardModifiers[CardType] += creatureModifierAmount;
-        } 
+            c.cardModified = true;
+        }
     }
 }

@@ -26,6 +26,11 @@ public class BattleSquarePreview : UserGraphicController
     {
         base.Update();
 
+        if(battleSquarePreviewPane.activeSelf && battleSquareContentPane.transform.childCount == 0)
+        {
+            battleSquarePreviewPane.SetActive(false);
+        }
+
         if (!gameController.activeObject && gameController.battleSquareToPlayOn != null && GameObject.Equals(gameController.battleSquareToPlayOn, this.gameObject) && Input.GetMouseButtonDown(1))
         {
             BattleSquare battleSquare = gameController.battleSquareToPlayOn.GetComponent<BattleSquare>();
@@ -44,14 +49,16 @@ public class BattleSquarePreview : UserGraphicController
 
                 foreach (Card card in battleSquare.cardsPlayedOnObject)
                 {
-                    GameObject cardPrefab = Instantiate(battleSquare.cardPrefab);
-
-                    cardPrefab.transform.SetParent(battleSquareContentPane.transform);
-                    cardPrefab.transform.localScale = new Vector3(1f, 1f, 1f);
-                    cardPrefab.GetComponent<CardMovement>().enabled = false;
-
-                    cardPrefab.GetComponent<CardInfo>().card = card;
-                    cardPrefab.GetComponent<CardGraphics>().SetCardGraphics();
+                    GameObject cardMade = Utils.CreateCardGameObject(
+                        cardPrefab: battleSquare.cardPrefab,
+                        parent: battleSquareContentPane.transform,
+                        card: card,
+                        scale: new Vector3(1f, 1f, 1f),
+                        cardPlayedFrom: card.cardPlayedFrom,
+                        cardOwner: card.cardOwner
+                    );
+                    cardMade.GetComponent<CardMovement>().enabled = false;
+                    cardMade.GetComponent<CardGraphics>().SetCardGraphics();
                 }
                 userGraphicsUp = true;
             }

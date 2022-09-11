@@ -15,21 +15,30 @@ public abstract class Card
 
     public enum CardTypes
     {
+        COMMANDER,
         MONSTER,
         SPELL,
-        SQUARE_MODIFIER,
-        COMMANDER
+        SQUARE_MODIFIER    
     }
 
     public abstract CardTypes CardType { get; }
 
-    public enum CardSource
+    public enum CardPlayedFrom
     {
         HAND,
         BATTLE_SQUARE
     }
 
-    public CardSource cardSource;
+    public CardPlayedFrom cardPlayedFrom;
+
+    public enum CardOwner
+    {
+        SELF,
+        ENEMY,
+        NEUTRAL
+    }
+
+    public CardOwner cardOwner;
 
     public Dictionary<CardTypes, int> cardModifiers = new Dictionary<CardTypes, int>();
     public GameObject parentGameobject;
@@ -44,9 +53,9 @@ public abstract class Card
         // Assumes CanPlayCardOnTarget and HasEnoughMana are called from an external source
         OnPlayConditions(target);
 
-        switch (cardSource)
+        switch (cardPlayedFrom)
         {
-            case CardSource.HAND:
+            case CardPlayedFrom.HAND:
                 GameObject.FindGameObjectWithTag(Constants.PLAYER_STAT_GAMEOBJECT_TAG).GetComponent<PlayerStats>().playerMana -= (int)this.CardCost;
                 GameObject.FindGameObjectWithTag(Constants.PLAYER_STAT_GAMEOBJECT_TAG).GetComponent<PlayerStats>().UpdateCardGraphics();
                 break;
@@ -70,11 +79,16 @@ public abstract class Card
 
     public virtual void MoveCard(GameObject target)
     {
-        ResetCardValues();
+        SoftResetCardValues();
         OnPlayConditions(target);
     }
 
-    public virtual void ResetCardValues() { }
+    public virtual void SoftResetCardValues() { }
+
+    public virtual void HardResetCardValues()
+    {
+        cardModifiers.Clear();
+    }
 
     public virtual void OnPlayConditions(GameObject target) { }
     public virtual void OnBoardConditions() { }
@@ -95,7 +109,7 @@ public abstract class Card
             target.objectPlayed = true;
             target.squareOccupied = true;
             target.cardsPlayedOnObject.Add(this);
-            cardSource = CardSource.BATTLE_SQUARE;
+            cardPlayedFrom = CardPlayedFrom.BATTLE_SQUARE;
         }
     }
 
