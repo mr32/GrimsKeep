@@ -316,6 +316,7 @@ public class BattleSquare : HoverableObject
         battleSquareAttackGraphic.GetComponentInChildren<Text>().text = 0.ToString();
         battleSquareDefenseGraphic.GetComponentInChildren<Text>().text = 0.ToString();
         battleSquareHealthGraphic.GetComponentInChildren<Text>().text = 0.ToString();
+        battleSquareAttackGraphic.GetComponentInChildren<Text>().color = Color.white;
 
         if (fullReset)
         {
