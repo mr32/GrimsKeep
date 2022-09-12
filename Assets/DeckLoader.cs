@@ -11,7 +11,7 @@ public class DeckLoader : MonoBehaviour
     // Start is called before the first frame update
     public List<string> deck = new List<string>();
 
-    void Awake(){
+    void Awake() {
         //UnityEngine.Object[] cardsForTesting = Resources.LoadAll("Cards");
         //for(int i = 0; i < 3; i++){
         //    foreach(var c in cardsForTesting){
@@ -32,28 +32,33 @@ public class DeckLoader : MonoBehaviour
         //     CardNames.TEST_CARD,
         //     CardNames.TEST_CARD,
         // };
+
+        playerHand = GameObject.FindGameObjectWithTag(Constants.HAND_AREA_TAG).transform;
+
     }
     void Start()
     {
-        playerHand = GameObject.FindGameObjectWithTag(Constants.HAND_AREA_TAG).transform;
-        bool testBool = false;
+        LoadDeck();
+    }
 
-        foreach(string cardName in deck){
+    public void LoadDeck()
+    {
+        foreach (string cardName in deck)
+        {
             GameObject cardMade = Utils.CreateCardGameObject(
                 cardPrefab: cardPrefab,
                 parent: playerHand,
-                card: (Card)Activator.CreateInstance(Type.GetType(cardName)),
+                card: CreateCardInstanceByName(cardName),
                 scale: new Vector3(0.5f, 0.5f, 0.5f),
                 cardPlayedFrom: Card.CardPlayedFrom.HAND,
-                cardOwner: Card.CardOwner.SELF
+                cardOwner: Card.PlayTypes.SELF
             );
-            if (!testBool)
-            {
-                cardMade.GetComponent<CardInfo>().card.cardOwner = Card.CardOwner.ENEMY;
-                testBool = true;
-            }
         }
+    }
 
+    public Card CreateCardInstanceByName(string s)
+    {
+        return (Card)Activator.CreateInstance(Type.GetType(s));
     }
 
     // Update is called once per frame

@@ -31,14 +31,14 @@ public abstract class Card
 
     public CardPlayedFrom cardPlayedFrom;
 
-    public enum CardOwner
+    public enum PlayTypes
     {
         SELF,
         ENEMY,
         NEUTRAL
     }
 
-    public CardOwner cardOwner;
+    public PlayTypes cardOwner;
 
     public Dictionary<CardTypes, Dictionary<string, int>> cardModifiers = new Dictionary<CardTypes, Dictionary<string, int>>();
     public GameObject parentGameobject;
@@ -53,21 +53,15 @@ public abstract class Card
         // Assumes CanPlayCardOnTarget and HasEnoughMana are called from an external source
         OnPlayConditions(target);
 
-        switch (cardPlayedFrom)
+        if(cardOwner == PlayTypes.SELF && cardPlayedFrom == CardPlayedFrom.HAND)
         {
-            case CardPlayedFrom.HAND:
-                GameObject.FindGameObjectWithTag(Constants.PLAYER_STAT_GAMEOBJECT_TAG).GetComponent<PlayerStats>().playerMana -= (int)this.CardCost;
-                GameObject.FindGameObjectWithTag(Constants.PLAYER_STAT_GAMEOBJECT_TAG).GetComponent<PlayerStats>().UpdateCardGraphics();
-                break;
-            default:
-                break;
+            GameObject.FindGameObjectWithTag(Constants.PLAYER_STAT_GAMEOBJECT_TAG).GetComponent<PlayerStats>().playerMana -= (int)this.CardCost;
+            GameObject.FindGameObjectWithTag(Constants.PLAYER_STAT_GAMEOBJECT_TAG).GetComponent<PlayerStats>().UpdateGraphics();
         }
 
         BattleSquare targetBattleSquare = target.GetComponent<BattleSquare>();
 
         OccupyBattleSquare(targetBattleSquare);
-
-        OnBoardConditions();
 
         DiscardCard();
     }
@@ -106,8 +100,12 @@ public abstract class Card
     {
         if (target)
         {
+            if(this is CreatureCard)
+            {
+                target.squareOccupied = true;
+            }
+
             target.objectPlayed = true;
-            target.squareOccupied = true;
             target.cardsPlayedOnObject.Add(this);
             cardPlayedFrom = CardPlayedFrom.BATTLE_SQUARE;
         }

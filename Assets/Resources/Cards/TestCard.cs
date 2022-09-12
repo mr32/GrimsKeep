@@ -8,15 +8,21 @@ public class TestCard : CreatureCard
     private int modifyAmount = 3;
     public CardGraphics cardGraphics;
 
-    public override MoveDirections[] moveDirections => new MoveDirections[] { 
-        MoveDirections.TOP_RIGHT,
-        MoveDirections.TOP_LEFT
+    public override MoveDirections[] moveDirections => new MoveDirections[] {
+        MoveDirections.UP,
+        MoveDirections.DOWN,
+        MoveDirections.LEFT,
+        MoveDirections.RIGHT,
+        MoveDirections.BOTTOM_RIGHT,
+        MoveDirections.BOTTOM_LEFT,
+        MoveDirections.TOP_LEFT,
+        MoveDirections.TOP_RIGHT
     };
 
     public override string CardName => "Test Card A";
     public override string CardDescription => $"If the card is in the front\nit will get a power boost of {modifyAmount}";
     public override int BaseCreaturePower => 5;
-    public override int BaseCreatureDefense => 3;
+    public override int BaseCreatureDefense => 0;
     public override string CardFlair => "LARGE CREATURE";
     public override uint CardCost { get => 3; set => cardCost = value; }
 
@@ -44,6 +50,11 @@ public class TestCard : CreatureCard
 
         // If we played it on a BattleSquare and there is no creature on the square
         return targetBattleSquare && !targetBattleSquare.IsCreatureOnSquare();
+    }
+
+    public override string ToString()
+    {
+        return string.Format("cardName: {0} -- cardModified: {1}", CardName, cardModified);
     }
 
     public override void PlayCard(GameObject target)

@@ -31,4 +31,12 @@ public class BattleBoard : UserGraphicController
 
         base.ResetSelf();
     }
+
+    public void ResetBoard()
+    {
+        foreach(BattleSquare battleSquare in this.gameObject.GetComponentsInChildren<BattleSquare>())
+        {
+            battleSquare.ResetBattleSquareToDefaultState(true);
+        }
+    }
 }

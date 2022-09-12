@@ -15,6 +15,7 @@ public class BattleSquare : HoverableObject
     public GameObject cardPrefab;
     private GameObject battleSquareAttackGraphic;
     private GameObject battleSquareDefenseGraphic;
+    private GameObject battleSquareHealthGraphic;
 
     private GameManager gameManager;
 
@@ -35,9 +36,11 @@ public class BattleSquare : HoverableObject
         
         battleSquareAttackGraphic = Utils.FindChildWithTag(this.gameObject, Constants.BATTLE_SQUARE_ATTACK_GRAPHIC_TAG);
         battleSquareDefenseGraphic = Utils.FindChildWithTag(this.gameObject, Constants.BATTLE_SQUARE_DEFENSE_GRAPHIC_TAG);
+        battleSquareHealthGraphic = Utils.FindChildWithTag(this.gameObject, Constants.BATTLE_SQUARE_HEALTH_GRAPHIC_TAG);
 
         battleSquareAttackGraphic.SetActive(false);
         battleSquareDefenseGraphic.SetActive(false);
+        battleSquareHealthGraphic.SetActive(false);
 
         gameController = GameObject.FindGameObjectWithTag(Constants.GAME_CONTROLLER_TAG).GetComponent<GameController>();
         gameManager = GameObject.FindGameObjectWithTag(Constants.GAME_MANAGER_TAG).GetComponent<GameManager>();
@@ -225,13 +228,33 @@ public class BattleSquare : HoverableObject
         return total;
     }
 
+    public int CalculateSquareHealthTotals()
+    {
+        int total = 0;
+        foreach(CreatureCard creatureCard in GetCreatureCardsPlayedOnSquare())
+        {
+            total += creatureCard.BaseCreatureHealth;
+        }
+        return total;
+    }
+
+    public int CalculateSquareDefenseTotals()
+    {
+        int total = 0;
+        foreach(CreatureCard creatureCard in GetCreatureCardsPlayedOnSquare())
+        {
+            total += creatureCard.BaseCreatureDefense;
+        }
+        return total;
+    }
+
     public bool IsCreatureOnSquare(){
         return GetCreatureCardsPlayedOnSquare().Count > 0;
     }
 
     private bool AnyCreatureModifiedOnSquare()
     {
-        return cardsPlayedOnObject.Where(card => card is CreatureCard && ((CreatureCard)card).cardModified).ToList().Count > 0;
+        return cardsPlayedOnObject.Where(card => card is CreatureCard && ((CreatureCard)card).cardModified == true).ToList().Count > 0;
     }
 
     public bool AnySquareModifiers()
@@ -241,25 +264,41 @@ public class BattleSquare : HoverableObject
 
     public bool AnyEnemyCardsOnSquare()
     {
-        return cardsPlayedOnObject.Where(card => card is CreatureCard && card.cardOwner == Card.CardOwner.ENEMY).ToList().Count > 0;
+        return cardsPlayedOnObject.Where(card => card is CreatureCard && card.cardOwner == Card.PlayTypes.ENEMY).ToList().Count > 0;
     }
 
     public void UpdateAttackAndDefenseGraphics()
     {
-        battleSquareAttackGraphic.SetActive(true);
-        battleSquareDefenseGraphic.SetActive(true);
+        EnableOrDisableSquareGraphics(true);
 
         battleSquareAttackGraphic.GetComponentInChildren<Text>().text = CalculateSquarePowerTotals().ToString();
 
         this.GetComponent<Image>().color = AnyEnemyCardsOnSquare() ? Color.red : Color.black;
+
+        if (IsCommanderOnSquare())
+        {
+            this.GetComponent<Image>().color = Color.magenta;
+        }
 
         if (AnyCreatureModifiedOnSquare())
         {
             battleSquareAttackGraphic.GetComponentInChildren<Text>().color = Color.green;
         }
 
-        // TODO: Calculate correct defense total
-        battleSquareDefenseGraphic.GetComponentInChildren<Text>().text = 0.ToString();
+        int defenseTotal = CalculateSquareDefenseTotals();
+        if(defenseTotal == 0)
+        {
+            battleSquareDefenseGraphic.SetActive(false);
+        }
+        battleSquareDefenseGraphic.GetComponentInChildren<Text>().text = CalculateSquareDefenseTotals().ToString();
+        battleSquareHealthGraphic.GetComponentInChildren<Text>().text = CalculateSquareHealthTotals().ToString();
+    }
+
+    private void EnableOrDisableSquareGraphics(bool show)
+    {
+        battleSquareAttackGraphic.SetActive(show);
+        battleSquareDefenseGraphic.SetActive(show);
+        battleSquareHealthGraphic.SetActive(show);
     }
 
     public CommanderCard GetCommanderCard()
@@ -276,8 +315,7 @@ public class BattleSquare : HoverableObject
     {
         battleSquareAttackGraphic.GetComponentInChildren<Text>().text = 0.ToString();
         battleSquareDefenseGraphic.GetComponentInChildren<Text>().text = 0.ToString();
-
-        this.GetComponent<Image>().color = AnySquareModifiers() ? Color.yellow : Color.white;
+        battleSquareHealthGraphic.GetComponentInChildren<Text>().text = 0.ToString();
 
         if (fullReset)
         {
@@ -288,15 +326,12 @@ public class BattleSquare : HoverableObject
             cardsPlayedOnObject = GetCardsPlayedByType(Card.CardTypes.SQUARE_MODIFIER);
         }
 
-        foreach(Card card in GetCardsPlayedByType(Card.CardTypes.SQUARE_MODIFIER))
-        {
-            ((SpellCard)card).cardApplied = false;
-        }
+        this.GetComponent<Image>().color = AnySquareModifiers() ? Color.yellow : Color.white;
+
 
         squareOccupied = false;
         availablePlacesToMove.Clear();
 
-        battleSquareAttackGraphic.SetActive(false);
-        battleSquareDefenseGraphic.SetActive(false);
+        EnableOrDisableSquareGraphics(false);
     }
 }

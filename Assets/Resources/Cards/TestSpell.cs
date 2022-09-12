@@ -11,6 +11,8 @@ public class TestSpell : SpellCard
     public int creatureModifierAmount = 5;
     public override CardTypes CardType => CardTypes.SQUARE_MODIFIER;
 
+    public override PlayTypes IsAbleToBeUsedOn => PlayTypes.SELF;
+
     public override void OnPlayConditions(GameObject gameObjectPlayedOn)
     {
         BattleSquare battleSquare = gameObjectPlayedOn.GetComponent<BattleSquare>();
@@ -31,19 +33,13 @@ public class TestSpell : SpellCard
 
     public override void ApplyToTarget(Card targetedCard)
     {
-        if(targetedCard is CreatureCard c)
+        if(targetedCard is CreatureCard c && (IsAbleToBeUsedOn == c.cardOwner || IsAbleToBeUsedOn == PlayTypes.NEUTRAL))
         {
             Utils.AddToCardModifiers(
                 cardModifierDictionary: c.cardModifiers,
                 cardToAdd: this,
                 valueToAdd: creatureModifierAmount
             );
-            //if (!c.cardModifiers.ContainsKey(CardType))
-            //{
-            //    c.cardModifiers.Add(CardType, 0);
-            //}
-
-            //c.cardModifiers[CardType] += creatureModifierAmount;
             c.cardModified = true;
         }
     }

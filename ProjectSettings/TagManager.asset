@@ -25,6 +25,8 @@ TagManager:
   - BattleBoard
   - UIPanel
   - GameManager
+  - DeckLoader
+  - BattleSquareHealth
   layers:
   - Default
   - TransparentFX

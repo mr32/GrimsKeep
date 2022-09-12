@@ -33,7 +33,7 @@ public static class Utils
         return (siblingIndex / Constants.BOARD_WIDTH, siblingIndex % Constants.BOARD_WIDTH);
     }
 
-    public static GameObject CreateCardGameObject(GameObject cardPrefab, Transform parent, Card card, Vector3 scale, Card.CardPlayedFrom cardPlayedFrom, Card.CardOwner cardOwner)
+    public static GameObject CreateCardGameObject(GameObject cardPrefab, Transform parent, Card card, Vector3 scale, Card.CardPlayedFrom cardPlayedFrom, Card.PlayTypes cardOwner)
     {
         GameObject cardObject = UnityEngine.Object.Instantiate(cardPrefab);
         cardObject.transform.SetParent(parent);
