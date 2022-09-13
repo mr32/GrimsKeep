@@ -8,7 +8,7 @@ public abstract class CreatureCard : Card
     public abstract int BaseCreaturePower { get; }
     public abstract int BaseCreatureDefense { get; }
 
-    public abstract int BaseCreatureHealth { get; }
+    public abstract int BaseCreatureHealth { get; set; }
     public override CardTypes CardType => CardTypes.MONSTER;
 
     public bool cardModified;
@@ -77,5 +77,10 @@ public abstract class CreatureCard : Card
                 spellCard.ApplyToTarget(this);
             }
         }
+    }
+
+    public virtual void AttackCreature(CreatureCard target)
+    {
+        target.BaseCreatureHealth -= GetTotalPowerTotal();
     }
 }

@@ -8,8 +8,6 @@ public class TestCommander : CommanderCard
 
     public override int BaseCreatureDefense => 5;
 
-    public override int BaseCreatureHealth => 10;
-
     public override string CardName => "Test Commander";
 
     public override string CardDescription => "Commander of the deck";
@@ -17,6 +15,8 @@ public class TestCommander : CommanderCard
     public override uint CardCost { get => 6; set => cardCost = value; }
 
     public override string CardFlair => "My Life";
+
+    public override int BaseCreatureHealth { get => 10; set => BaseCreatureHealth = value; }
 
     public override bool CanPlayCardOnTarget(GameObject target)
     {

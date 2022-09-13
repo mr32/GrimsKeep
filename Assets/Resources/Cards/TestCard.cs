@@ -24,9 +24,9 @@ public class TestCard : CreatureCard
     public override int BaseCreaturePower => 5;
     public override int BaseCreatureDefense => 0;
     public override string CardFlair => "LARGE CREATURE";
-    public override uint CardCost { get => 3; set => cardCost = value; }
+    public override uint CardCost { get => 3; set => CardCost = value; }
 
-    public override int BaseCreatureHealth => 2;
+    public override int BaseCreatureHealth { get => 2; set => BaseCreatureHealth = value; }
 
     public override void OnPlayConditions(GameObject target)
     {

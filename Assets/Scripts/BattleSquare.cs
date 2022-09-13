@@ -87,7 +87,8 @@ public class BattleSquare : HoverableObject
             {
                 CreatureCard.MoveDirections[] moves = GetCreatureCardsPlayedOnSquare().SelectMany(x => ((CreatureCard)x).moveDirections).ToArray().Distinct().Cast<CreatureCard.MoveDirections>().ToArray();
                 LightUpMoveSquares(moves);
-                PickUpCardsOnSquare();
+                if(GetSquareOwner() == Card.PlayTypes.SELF)
+                    PickUpCardsOnSquare();
             }
         }
     }
@@ -108,6 +109,18 @@ public class BattleSquare : HoverableObject
     {
         gameController.activeObject = this.gameObject;
         gameController.userGraphicsUp = true;
+    }
+
+    private Card.PlayTypes GetSquareOwner()
+    {
+        CreatureCard c = cardsPlayedOnObject.SingleOrDefault(card => card is CreatureCard) as CreatureCard;
+        
+        if(c == null)
+        {
+            return Card.PlayTypes.NEUTRAL;
+        }
+
+        return c.cardOwner;
     }
 
     private void LightUpMoveSquares(CreatureCard.MoveDirections[] possibleMoveDirections)
