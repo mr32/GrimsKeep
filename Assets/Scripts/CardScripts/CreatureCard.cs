@@ -81,6 +81,6 @@ public abstract class CreatureCard : Card
 
     public virtual void AttackCreature(CreatureCard target)
     {
-        target.BaseCreatureHealth -= GetTotalPowerTotal();
+        Debug.Log("Enemy Attacked");
     }
 }

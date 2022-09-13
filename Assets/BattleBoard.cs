@@ -19,12 +19,18 @@ public class BattleBoard : UserGraphicController
         foreach (int i in battleSquareIndiciesLit)
         {
             BattleSquare battleSquare = this.transform.GetChild(i).GetComponent<BattleSquare>();
-            if(!battleSquare.squareOccupied)
-                this.transform.GetChild(i).GetComponent<Image>().color = originalColor;
-
-            if (battleSquare.AnySquareModifiers())
+            
+            if(battleSquare.AnySquareModifiers())
             {
                 this.transform.GetChild(i).GetComponent<Image>().color = Color.yellow;
+            }
+            else if(battleSquare.AnyEnemyCardsOnSquare())
+            {
+                this.transform.GetChild(i).GetComponent<Image>().color = Color.green;
+            }
+            else
+            {
+                this.transform.GetChild(i).GetComponent<Image>().color = originalColor;
             }
         }
         battleSquareIndiciesLit.Clear();
