@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class TestCommander : CommanderCard
 {
-    public override int BaseCreaturePower => 100;
+    protected override int BaseCreaturePower => 1;
 
-    public override int BaseCreatureDefense => 5;
+    protected override int BaseCreatureDefense => 5;
 
     public override string CardName => "Test Commander";
 
@@ -16,7 +16,7 @@ public class TestCommander : CommanderCard
 
     public override string CardFlair => "My Life";
 
-    public override int BaseCreatureHealth { get => 10; set => BaseCreatureHealth = value; }
+    protected override int BaseCreatureHealth => 10;
 
     public override bool CanPlayCardOnTarget(GameObject target)
     {

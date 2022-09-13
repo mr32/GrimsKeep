@@ -36,7 +36,7 @@ public class CardGraphics : MonoBehaviour
 
         if (cardToShow is CreatureCard c)
         {
-            cardPowerGraphic.GetComponentInChildren<Text>().text = c.BaseCreaturePower.ToString();
+            cardPowerGraphic.GetComponentInChildren<Text>().text = c.GetTotalPowerTotal().ToString();
             if (c.cardModified)
             {
                 cardPowerGraphic.GetComponentInChildren<Text>().text = c.GetTotalPowerTotal().ToString();

@@ -45,6 +45,8 @@ public abstract class Card
 
     public GameObject battleBoard;
 
+    public BattleSquare battleSquare;
+
     public virtual void PlayCard(GameObject target)
     {
         // Remove any square modifiers
@@ -108,6 +110,7 @@ public abstract class Card
             target.objectPlayed = true;
             target.cardsPlayedOnObject.Add(this);
             cardPlayedFrom = CardPlayedFrom.BATTLE_SQUARE;
+            battleSquare = target;
         }
     }
 

@@ -5,12 +5,11 @@ using UnityEngine;
 
 public abstract class CreatureCard : Card
 {
-    public abstract int BaseCreaturePower { get; }
-    public abstract int BaseCreatureDefense { get; }
-
-    public abstract int BaseCreatureHealth { get; set; }
+    protected abstract int BaseCreaturePower { get; }
+    protected abstract int BaseCreatureDefense { get; }
+    protected abstract int BaseCreatureHealth { get; }
     public override CardTypes CardType => CardTypes.MONSTER;
-
+    private int currentCreatureHP;
     public bool cardModified;
 
     public enum MoveDirections
@@ -27,6 +26,9 @@ public abstract class CreatureCard : Card
 
     public abstract MoveDirections[] moveDirections { get; } 
 
+    public CreatureCard(){
+        currentCreatureHP = BaseCreatureHealth;
+    }
     public int GetTotalPowerTotal(){
         int total = BaseCreaturePower;
 
@@ -39,6 +41,19 @@ public abstract class CreatureCard : Card
         }
 
         return total;
+    }
+
+    public void SetCreatureHP(int value){
+        currentCreatureHP = value;
+    }
+
+    public int GetTotalCurrentCreatureHP(){
+        return currentCreatureHP;
+    }
+
+    public int GetTotalCurrentDefenseCreatureHP()
+    {
+        return BaseCreatureDefense;
     }
 
     public override void SoftResetCardValues()
@@ -81,6 +96,24 @@ public abstract class CreatureCard : Card
 
     public virtual void AttackCreature(CreatureCard target)
     {
-        Debug.Log("Enemy Attacked");
+        target.SetCreatureHP(target.GetTotalCurrentCreatureHP() - GetTotalPowerTotal());
+        if(target.GetTotalCurrentCreatureHP() <= 0){
+            // Remove that card from the target BattleSquare
+            target.battleSquare.cardsPlayedOnObject.Remove(target);
+            
+            // If there are no more enemy cards on the square
+            if(!target.battleSquare.AnyEnemyCardsOnSquare()){
+                BattleSquare previousBattleSquare = battleSquare;
+                PlayCard(target.battleSquare.gameObject);
+
+                previousBattleSquare.cardsPlayedOnObject.Remove(this);
+                previousBattleSquare.ResetBattleSquareToDefaultState(false);
+            }
+        }
+        else
+        {
+            // Nothing gets played, just update graphics
+            target.battleSquare.UpdateAttackAndDefenseGraphics();
+        }
     }
 }

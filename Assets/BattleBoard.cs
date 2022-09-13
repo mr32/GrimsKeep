@@ -20,13 +20,13 @@ public class BattleBoard : UserGraphicController
         {
             BattleSquare battleSquare = this.transform.GetChild(i).GetComponent<BattleSquare>();
             
-            if(battleSquare.AnySquareModifiers())
+            if(battleSquare.AnySquareModifiers() && !battleSquare.AnyEnemyCardsOnSquare())
             {
                 this.transform.GetChild(i).GetComponent<Image>().color = Color.yellow;
             }
             else if(battleSquare.AnyEnemyCardsOnSquare())
             {
-                this.transform.GetChild(i).GetComponent<Image>().color = Color.green;
+                this.transform.GetChild(i).GetComponent<Image>().color = battleSquare.currentColor;
             }
             else
             {

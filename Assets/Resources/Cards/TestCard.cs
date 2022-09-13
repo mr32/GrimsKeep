@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class TestCard : CreatureCard
 {
     private int modifyAmount = 3;
+
     public CardGraphics cardGraphics;
 
     public override MoveDirections[] moveDirections => new MoveDirections[] {
@@ -21,12 +22,12 @@ public class TestCard : CreatureCard
 
     public override string CardName => "Test Card A";
     public override string CardDescription => $"If the card is in the front\nit will get a power boost of {modifyAmount}";
-    public override int BaseCreaturePower => 5;
-    public override int BaseCreatureDefense => 0;
+    protected override int BaseCreaturePower => 5;
+    protected override int BaseCreatureDefense => 0;
     public override string CardFlair => "LARGE CREATURE";
     public override uint CardCost { get => 3; set => CardCost = value; }
 
-    public override int BaseCreatureHealth { get => 2; set => BaseCreatureHealth = value; }
+    protected override int BaseCreatureHealth => 3;
 
     public override void OnPlayConditions(GameObject target)
     {

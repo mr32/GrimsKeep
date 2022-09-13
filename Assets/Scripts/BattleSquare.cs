@@ -29,6 +29,8 @@ public class BattleSquare : HoverableObject
 
     public List<Card> cardsPlayedOnObject = new List<Card>();
 
+    public Color currentColor;
+
     void Awake()
     {
         battlePlaySquare = this.gameObject.transform.parent.gameObject;
@@ -85,6 +87,7 @@ public class BattleSquare : HoverableObject
                             foreach(CreatureCard squareCreatureCards in GetCreatureCardsPlayedOnSquare())
                             {
                                 card.AttackCreature(squareCreatureCards);
+                                // UpdateAttackAndDefenseGraphics();
                             }
                         }
                     }
@@ -260,7 +263,7 @@ public class BattleSquare : HoverableObject
         int total = 0;
         foreach(CreatureCard creatureCard in GetCreatureCardsPlayedOnSquare())
         {
-            total += creatureCard.BaseCreatureHealth;
+            total += creatureCard.GetTotalCurrentCreatureHP();
         }
         return total;
     }
@@ -270,7 +273,7 @@ public class BattleSquare : HoverableObject
         int total = 0;
         foreach(CreatureCard creatureCard in GetCreatureCardsPlayedOnSquare())
         {
-            total += creatureCard.BaseCreatureDefense;
+            total += creatureCard.GetTotalCurrentDefenseCreatureHP();
         }
         return total;
     }
@@ -319,6 +322,7 @@ public class BattleSquare : HoverableObject
         }
         battleSquareDefenseGraphic.GetComponentInChildren<Text>().text = CalculateSquareDefenseTotals().ToString();
         battleSquareHealthGraphic.GetComponentInChildren<Text>().text = CalculateSquareHealthTotals().ToString();
+        currentColor = this.GetComponent<Image>().color;
     }
 
     private void EnableOrDisableSquareGraphics(bool show)
