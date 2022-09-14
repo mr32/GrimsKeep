@@ -22,12 +22,12 @@ public class TestCard : CreatureCard
 
     public override string CardName => "Test Card A";
     public override string CardDescription => $"If the card is in the front\nit will get a power boost of {modifyAmount}";
-    protected override int BaseCreaturePower => 5;
-    protected override int BaseCreatureDefense => 0;
+    protected override int BasePower => 5;
+    protected override int BaseDefense => 0;
     public override string CardFlair => "LARGE CREATURE";
     public override uint CardCost { get => 3; set => CardCost = value; }
 
-    protected override int BaseCreatureHealth => 3;
+    protected override int BaseHealth => 3;
 
     public override void OnPlayConditions(GameObject target)
     {

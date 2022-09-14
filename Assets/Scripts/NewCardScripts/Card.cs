@@ -18,7 +18,8 @@ public abstract class Card
         COMMANDER,
         MONSTER,
         SPELL,
-        SQUARE_MODIFIER    
+        SQUARE_MODIFIER,
+        OBSTACLE
     }
 
     public abstract CardTypes CardType { get; }

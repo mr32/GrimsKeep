@@ -3,13 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public abstract class CreatureCard : Card
+public abstract class CreatureCard : BoardTarget
 {
-    protected abstract int BaseCreaturePower { get; }
-    protected abstract int BaseCreatureDefense { get; }
-    protected abstract int BaseCreatureHealth { get; }
     public override CardTypes CardType => CardTypes.MONSTER;
-    private int currentCreatureHP;
     public bool cardModified;
 
     public int killCount = 0;
@@ -28,11 +24,8 @@ public abstract class CreatureCard : Card
 
     public abstract MoveDirections[] moveDirections { get; } 
 
-    public CreatureCard(){
-        currentCreatureHP = BaseCreatureHealth;
-    }
     public int GetTotalPowerTotal(){
-        int total = BaseCreaturePower;
+        int total = BasePower;
 
         foreach(var item in cardModifiers)
         {
@@ -46,16 +39,16 @@ public abstract class CreatureCard : Card
     }
 
     public void SetCreatureHP(int value){
-        currentCreatureHP = value;
+        currentHP = value;
     }
 
     public int GetTotalCurrentCreatureHP(){
-        return currentCreatureHP;
+        return currentHP;
     }
 
     public int GetTotalCurrentDefenseCreatureHP()
     {
-        return BaseCreatureDefense;
+        return BaseDefense;
     }
 
     public override void SoftResetCardValues()
@@ -77,7 +70,7 @@ public abstract class CreatureCard : Card
 
     public override string ToString()
     {
-        return string.Format("cName: {0} -- cCost: {1} -- cPower: {2} -- cTotalPower: {3}", CardName, CardCost, BaseCreaturePower, GetTotalPowerTotal());
+        return string.Format("cName: {0} -- cCost: {1} -- cPower: {2} -- cTotalPower: {3}", CardName, CardCost, BasePower, GetTotalPowerTotal());
     }
 
     public override void PlayCard(GameObject target)

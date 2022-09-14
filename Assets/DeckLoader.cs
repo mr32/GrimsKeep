@@ -45,7 +45,7 @@ public class DeckLoader : MonoBehaviour
     {
         foreach (string cardName in deck)
         {
-            GameObject cardMade = Utils.CreateCardGameObject(
+            Utils.CreateCardGameObject(
                 cardPrefab: cardPrefab,
                 parent: playerHand,
                 card: CreateCardInstanceByName(cardName),
