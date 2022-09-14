@@ -9,9 +9,9 @@ public class TestSpell : SpellCard
     public override uint CardCost { get => 1; set => cardCost = value; }
     public override string CardFlair => "Cool Test Spell!";
     public int creatureModifierAmount = 5;
-    public override CardTypes CardType => CardTypes.SQUARE_MODIFIER;
 
-    public override PlayTypes IsAbleToBeUsedOn => PlayTypes.SELF;
+    public override CardTypes CardType => CardTypes.SQUARE_MODIFIER;
+    public override PlayTypes IsAbleToBeUsedOn => PlayTypes.NEUTRAL;
 
     public override void OnPlayConditions(GameObject gameObjectPlayedOn)
     {
@@ -28,7 +28,7 @@ public class TestSpell : SpellCard
         BattleSquare targetBattleSquare = target.GetComponent<BattleSquare>();
 
         // If we played it on a BattleSquare and there is a creature on the square
-        return targetBattleSquare && targetBattleSquare.IsCreatureOnSquare();
+        return targetBattleSquare && targetBattleSquare.IsCreatureOnSquare() && !targetBattleSquare.AnyEnemyCardsOnSquare();
     }
 
     public override void ApplyToTarget(Card targetedCard)

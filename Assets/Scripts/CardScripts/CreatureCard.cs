@@ -12,6 +12,8 @@ public abstract class CreatureCard : Card
     private int currentCreatureHP;
     public bool cardModified;
 
+    public int killCount = 0;
+
     public enum MoveDirections
     {
         UP,
@@ -98,17 +100,22 @@ public abstract class CreatureCard : Card
     {
         target.SetCreatureHP(target.GetTotalCurrentCreatureHP() - GetTotalPowerTotal());
         if(target.GetTotalCurrentCreatureHP() <= 0){
+            killCount += 1;
             // Remove that card from the target BattleSquare
             target.battleSquare.cardsPlayedOnObject.Remove(target);
             
             // If there are no more enemy cards on the square
             if(!target.battleSquare.AnyEnemyCardsOnSquare()){
                 BattleSquare previousBattleSquare = battleSquare;
-                PlayCard(target.battleSquare.gameObject);
+                foreach(Card c in previousBattleSquare.GetMovableCardsPlayedOnSquare())
+                {
+                    c.PlayCard(target.battleSquare.gameObject);
+                }
 
-                previousBattleSquare.cardsPlayedOnObject.Remove(this);
                 previousBattleSquare.ResetBattleSquareToDefaultState(false);
             }
+
+            //Debug.Log(string.Format("{0} has {1} kills!", this.GetType().Name, killCount));
         }
         else
         {
