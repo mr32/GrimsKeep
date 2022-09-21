@@ -6,8 +6,7 @@ using UnityEngine;
 public abstract class CreatureCard : BoardTarget
 {
     public override CardTypes CardType => CardTypes.MONSTER;
-    public bool cardModified;
-
+    
     public int killCount = 0;
 
     public enum MoveDirections
@@ -23,33 +22,6 @@ public abstract class CreatureCard : BoardTarget
     }
 
     public abstract MoveDirections[] moveDirections { get; } 
-
-    public int GetTotalPowerTotal(){
-        int total = BasePower;
-
-        foreach(var item in cardModifiers)
-        {
-            foreach(var inner_item in cardModifiers[item.Key])
-            {
-                total += inner_item.Value;
-            }
-        }
-
-        return total;
-    }
-
-    public void SetCreatureHP(int value){
-        currentHP = value;
-    }
-
-    public int GetTotalCurrentCreatureHP(){
-        return currentHP;
-    }
-
-    public int GetTotalCurrentDefenseCreatureHP()
-    {
-        return BaseDefense;
-    }
 
     public override void SoftResetCardValues()
     {

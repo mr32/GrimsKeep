@@ -22,6 +22,7 @@ public class DeckLoader : MonoBehaviour
         deck.Add("TestCard");
         deck.Add("TestCard");
         deck.Add("TestCard");
+        deck.Add("TestObstacle");
         deck.Add("TestSpell");
         deck.Add("TestSpell");
         deck.Add("TestCommander");
