@@ -11,6 +11,7 @@ public class CardGraphics : MonoBehaviour
     public GameObject cardPowerGraphic;
     public GameObject cardDefenseGraphic;
     public GameObject cardCostGraphic;
+    public GameObject cardHealthGraphics;
 
     void Awake(){
         cardNameGraphic = Utils.FindChildWithTag(this.gameObject, CardConstants.CARD_NAME_TAG);
@@ -19,6 +20,7 @@ public class CardGraphics : MonoBehaviour
         cardPowerGraphic = Utils.FindChildWithTag(this.gameObject, CardConstants.CARD_POWER_TAG);
         cardDefenseGraphic = Utils.FindChildWithTag(this.gameObject, CardConstants.CARD_DEFENSE_TAG);
         cardCostGraphic = Utils.FindChildWithTag(this.gameObject, CardConstants.CARD_COST_TAG);
+        cardHealthGraphics = Utils.FindChildWithTag(this.gameObject, CardConstants.CARD_HEALTH_TAG);
     }
 
     public void SetCardGraphics(){
@@ -37,6 +39,7 @@ public class CardGraphics : MonoBehaviour
         if (cardToShow is BoardTarget c)
         {
             cardPowerGraphic.GetComponentInChildren<Text>().text = c.GetTotalPowerTotal().ToString();
+            cardHealthGraphics.GetComponentInChildren<Text>().text = c.GetTotalCurrentCreatureHP().ToString();
             if (c.cardModified)
             {
                 cardPowerGraphic.GetComponentInChildren<Text>().text = c.GetTotalPowerTotal().ToString();

@@ -22,7 +22,7 @@ public class TestCommander : CommanderCard
     {
         BattleSquare targetBattleSquare = target.GetComponent<BattleSquare>();
 
-        return targetBattleSquare && !targetBattleSquare.IsCreatureOnSquare();
+        return targetBattleSquare && !targetBattleSquare.AnythingOnSquare();
     }
 
     public override void PlayCard(GameObject target)

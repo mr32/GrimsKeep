@@ -61,7 +61,7 @@ public abstract class CreatureCard : BoardTarget
         }
     }
 
-    public virtual void AttackCreature(CreatureCard target)
+    public virtual void AttackCreature(BoardTarget target)
     {
         target.SetCreatureHP(target.GetTotalCurrentCreatureHP() - GetTotalPowerTotal());
         if(target.GetTotalCurrentCreatureHP() <= 0){

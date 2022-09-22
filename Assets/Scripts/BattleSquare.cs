@@ -68,7 +68,7 @@ public class BattleSquare : HoverableObject
                 else if (gameController.activeObject.CompareTag(Constants.BATTLE_SQUARE_ID) && gameController.activeObject.GetComponent<BattleSquare>().availablePlacesToMove.Contains(orderInColumn))
                 {
                     // If this BattleSquare is Vacant
-                    if(!IsCreatureOnSquare())
+                    if(!AnythingOnSquare())
                     {
                         // Play Card
                         foreach (Card card in gameController.activeObject.GetComponent<BattleSquare>().GetMovableCardsPlayedOnSquare())
@@ -84,7 +84,7 @@ public class BattleSquare : HoverableObject
                         // Attack the creatures on this square
                         foreach(CreatureCard card in gameController.activeObject.GetComponent<BattleSquare>().GetCreatureCardsPlayedOnSquare())
                         {
-                            foreach(CreatureCard squareCreatureCards in GetCreatureCardsPlayedOnSquare())
+                            foreach(BoardTarget squareCreatureCards in GetCreatureCardsPlayedOnSquare())
                             {
                                 card.AttackCreature(squareCreatureCards);
                                 // UpdateAttackAndDefenseGraphics();
@@ -213,7 +213,7 @@ public class BattleSquare : HoverableObject
     {
         Transform battleSquare = battlePlaySquare.transform.GetChild(siblingIndex);
 
-        if (battleSquare && (!battleSquare.GetComponent<BattleSquare>().squareOccupied || battleSquare.GetComponent<BattleSquare>().GetSquareOwner() == Card.PlayTypes.ENEMY))
+        if (battleSquare && (!battleSquare.GetComponent<BattleSquare>().AnythingOnSquare() || (battleSquare.GetComponent<BattleSquare>().GetSquareOwner() == Card.PlayTypes.ENEMY || battleSquare.GetComponent<BattleSquare>().GetSquareOwner() == Card.PlayTypes.NEUTRAL)))
         {
             battleSquare.GetComponent<Image>().color = color;
             AddToLitSquaresIndex(siblingIndex);
@@ -234,7 +234,12 @@ public class BattleSquare : HoverableObject
 
     public List<Card> GetCreatureCardsPlayedOnSquare()
     {
-        return cardsPlayedOnObject.Where(card => card is CreatureCard).ToList();
+        return cardsPlayedOnObject.Where(card => (card is CreatureCard || card is ObstacleCard)).ToList();
+    }
+
+    public List<Card> GetAllBoardTargetsOnSquare()
+    {
+        return cardsPlayedOnObject.Where(card => (card is CreatureCard || card is ObstacleCard)).ToList();
     }
 
     public List<Card> GetMovableCardsPlayedOnSquare()
@@ -250,8 +255,8 @@ public class BattleSquare : HoverableObject
     public int CalculateSquarePowerTotals()
     {
         int total = 0;
-        List<Card> creatureList = GetCreatureCardsPlayedOnSquare();
-        foreach(CreatureCard creatureCard in creatureList)
+        List<Card> creatureList = GetAllBoardTargetsOnSquare();
+        foreach(BoardTarget creatureCard in creatureList)
         {
             total += creatureCard.GetTotalPowerTotal();
         }
@@ -261,7 +266,7 @@ public class BattleSquare : HoverableObject
     public int CalculateSquareHealthTotals()
     {
         int total = 0;
-        foreach(CreatureCard creatureCard in GetCreatureCardsPlayedOnSquare())
+        foreach(BoardTarget creatureCard in GetAllBoardTargetsOnSquare())
         {
             total += creatureCard.GetTotalCurrentCreatureHP();
         }
@@ -271,7 +276,7 @@ public class BattleSquare : HoverableObject
     public int CalculateSquareDefenseTotals()
     {
         int total = 0;
-        foreach(CreatureCard creatureCard in GetCreatureCardsPlayedOnSquare())
+        foreach(BoardTarget creatureCard in GetAllBoardTargetsOnSquare())
         {
             total += creatureCard.GetTotalCurrentDefenseCreatureHP();
         }
@@ -280,6 +285,11 @@ public class BattleSquare : HoverableObject
 
     public bool IsCreatureOnSquare(){
         return GetCreatureCardsPlayedOnSquare().Count > 0;
+    }
+
+    public bool AnythingOnSquare()
+    {
+        return GetAllBoardTargetsOnSquare().Count > 0;
     }
 
     private bool AnyCreatureModifiedOnSquare()
@@ -294,7 +304,7 @@ public class BattleSquare : HoverableObject
 
     public bool AnyEnemyCardsOnSquare()
     {
-        return cardsPlayedOnObject.Where(card => card is CreatureCard && card.cardOwner == Card.PlayTypes.ENEMY).ToList().Count > 0;
+        return GetAllBoardTargetsOnSquare().Where(card => card.cardOwner == Card.PlayTypes.ENEMY || card.cardOwner == Card.PlayTypes.NEUTRAL).ToList().Count > 0;
     }
 
     public void UpdateAttackAndDefenseGraphics()

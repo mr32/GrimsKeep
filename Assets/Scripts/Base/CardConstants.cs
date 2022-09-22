@@ -6,4 +6,5 @@
     public static string CARD_POWER_TAG = "CardPower";
     public static string CARD_DEFENSE_TAG = "CardDefense";
     public static string CARD_COST_TAG = "CardCost";
+    public static string CARD_HEALTH_TAG = "CardHealth";
 }

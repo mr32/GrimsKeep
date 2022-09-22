@@ -39,7 +39,7 @@ public abstract class Card
         NEUTRAL
     }
 
-    public PlayTypes cardOwner;
+    public virtual PlayTypes cardOwner { get; set; }
 
     public Dictionary<CardTypes, Dictionary<string, int>> cardModifiers = new Dictionary<CardTypes, Dictionary<string, int>>();
     public GameObject parentGameobject;
