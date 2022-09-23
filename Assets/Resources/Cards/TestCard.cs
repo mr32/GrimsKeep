@@ -50,7 +50,7 @@ public class TestCard : CreatureCard
         BattleSquare targetBattleSquare = target.GetComponent<BattleSquare>();
 
         // If we played it on a BattleSquare and there is no creature on the square
-        return targetBattleSquare && !targetBattleSquare.AnythingOnSquare();
+        return targetBattleSquare && !targetBattleSquare.IsSquareOccupied();
     }
 
     public override string ToString()

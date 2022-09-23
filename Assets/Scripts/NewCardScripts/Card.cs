@@ -119,16 +119,4 @@ public abstract class Card
     {
         return (int)this.CardCost <= GameObject.FindGameObjectWithTag(Constants.PLAYER_STAT_GAMEOBJECT_TAG).GetComponent<PlayerStats>().playerMana;
     }
-
-    public CommanderCard GetCommanderCard()
-    {
-        foreach(BattleSquare battleSquare in battleBoard.GetComponentsInChildren<BattleSquare>())
-        {
-            if (battleSquare.IsCommanderOnSquare())
-            {
-                return battleSquare.GetCommanderCard();
-            }
-        }
-        return null;
-    }
 }

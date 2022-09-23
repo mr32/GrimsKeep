@@ -61,7 +61,7 @@ public abstract class CreatureCard : BoardTarget
         }
     }
 
-    public virtual void AttackCreature(BoardTarget target)
+    public virtual void AttackBoardTarget(BoardTarget target)
     {
         target.SetCreatureHP(target.GetTotalCurrentCreatureHP() - GetTotalPowerTotal());
         if(target.GetTotalCurrentCreatureHP() <= 0){
@@ -70,7 +70,7 @@ public abstract class CreatureCard : BoardTarget
             target.battleSquare.cardsPlayedOnObject.Remove(target);
             
             // If there are no more enemy cards on the square
-            if(!target.battleSquare.AnyEnemyCardsOnSquare()){
+            if(!target.battleSquare.HasAnyAttackableCards()){
                 BattleSquare previousBattleSquare = battleSquare;
                 foreach(Card c in previousBattleSquare.GetMovableCardsPlayedOnSquare())
                 {
