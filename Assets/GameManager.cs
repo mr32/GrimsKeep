@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour
 {
     private GameObject battleBoard;
     public bool cardPlayed;
+
+    public List<string> playersTurn = new List<string>() { Constants.PLAYER1, Constants.ENEMY1 };
     private void Awake()
     {
         battleBoard = GameObject.FindGameObjectWithTag(Constants.BATTLE_BOARD_TAG);

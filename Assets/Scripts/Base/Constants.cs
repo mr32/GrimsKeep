@@ -29,6 +29,9 @@ public static class Constants
     public static string GAME_MANAGER_TAG = "GameManager";
     public static string DECK_LOADER_TAG = "DeckLoader";
 
+    public static string PLAYER1 = "player";
+    public static string ENEMY1 = "enemy";
+
 
     public static int BOARD_WIDTH = 5;
 }
