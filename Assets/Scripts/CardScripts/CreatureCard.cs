@@ -66,6 +66,7 @@ public abstract class CreatureCard : BoardTarget
         target.SetCreatureHP(target.GetTotalCurrentCreatureHP() - GetTotalPowerTotal());
         if(target.GetTotalCurrentCreatureHP() <= 0){
             killCount += 1;
+            target.OnDeath();
             // Remove that card from the target BattleSquare
             target.battleSquare.cardsPlayedOnObject.Remove(target);
             

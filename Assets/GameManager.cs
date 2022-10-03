@@ -7,10 +7,14 @@ public class GameManager : MonoBehaviour
     private GameObject battleBoard;
     public bool cardPlayed;
 
-    public List<string> playersTurn = new List<string>() { Constants.PLAYER1, Constants.ENEMY1 };
+    public List<string> playersTurn = new List<string>() { Constants.PLAYER1, Constants.ENEMY1, "HEY" };
+
+    public string currentPlayerTurn;
+
     private void Awake()
     {
         battleBoard = GameObject.FindGameObjectWithTag(Constants.BATTLE_BOARD_TAG);
+        currentPlayerTurn = Constants.PLAYER1;
     }
 
     void Update()

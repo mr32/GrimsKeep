@@ -45,4 +45,9 @@ public abstract class BoardTarget : Card
 
         return total;
     }
+
+    public virtual void OnDeath()
+    {
+        Debug.Log(this.GetType().Name + " has died");
+    }
 }
