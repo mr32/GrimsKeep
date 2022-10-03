@@ -477,7 +477,7 @@ MonoBehaviour:
   deckLoader: {fileID: 0}
   playerStats: {fileID: 0}
   buttonToClick: {fileID: 0}
-  gameManager: {fileID: 0}
+  gameController: {fileID: 0}
 --- !u!114 &312384909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1906,7 +1906,7 @@ MonoBehaviour:
   deckLoader: {fileID: 0}
   playerStats: {fileID: 0}
   buttonToClick: {fileID: 0}
-  gameManager: {fileID: 0}
+  gameController: {fileID: 0}
 --- !u!114 &972979226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2019,6 +2019,12 @@ MonoBehaviour:
   userGraphicsUp: 0
   activeObject: {fileID: 0}
   mousePointer: {fileID: 0}
+  playersTurn:
+  - player
+  - enemy
+  - HELLO
+  currentPlayerTurn: 
+  cardPlayed: 0
   battleSquareToPlayOn: {fileID: 0}
 --- !u!4 &1020034519
 Transform:
@@ -4282,7 +4288,7 @@ MonoBehaviour:
   deckLoader: {fileID: 0}
   playerStats: {fileID: 0}
   buttonToClick: {fileID: 0}
-  gameManager: {fileID: 0}
+  gameController: {fileID: 0}
 --- !u!114 &1798111845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4953,7 +4959,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1991090512
 MonoBehaviour:
   m_ObjectHideFlags: 0
