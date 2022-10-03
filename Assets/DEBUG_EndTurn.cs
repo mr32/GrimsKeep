@@ -8,12 +8,20 @@ public class DEBUG_EndTurn : Debugger
     void Start()
     {
         buttonToClick.onClick.AddListener(TaskOnClick);
+        foreach(string s in gameController.playersTurn)
+        {
+            Debug.Log(s);
+        }
     }
 
     void TaskOnClick()
     {
-        int indexToLookAt = playerTurnIndex++ % gameManager.playersTurn.Count;
-        gameManager.currentPlayerTurn = gameManager.playersTurn[indexToLookAt == 0 ? gameManager.playersTurn.Count - 1 : indexToLookAt];
-        Debug.Log("Current player turn: " + gameManager.currentPlayerTurn + " " + indexToLookAt.ToString());
+        int indexToLookAt = ++playerTurnIndex % gameController.playersTurn.Count;
+        if(indexToLookAt == 0)
+        {
+            playerTurnIndex = 0;
+        }
+        gameController.currentPlayerTurn = gameController.playersTurn[indexToLookAt];
+        Debug.Log("Current player turn: " + gameController.currentPlayerTurn + " " + indexToLookAt.ToString());
     }
 }

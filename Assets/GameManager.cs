@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     private GameObject battleBoard;
     public bool cardPlayed;
 
-    public List<string> playersTurn = new List<string>() { Constants.PLAYER1, Constants.ENEMY1, "HEY" };
+    public List<string> playersTurn = new List<string>() { Constants.PLAYER1, Constants.ENEMY1, "HELLO" };
 
     public string currentPlayerTurn;
 

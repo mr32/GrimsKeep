@@ -14,7 +14,6 @@ public class CardMovement : HoverableObject
     private Vector3 originalScale;
 
     private GameController gameController;
-    private GameManager gameManager;
     
     void Start()
     {
@@ -24,12 +23,11 @@ public class CardMovement : HoverableObject
         cardPreviewArea = GameObject.FindGameObjectWithTag(Constants.CARD_PREVIEW_TAG);
         originalScale = this.transform.localScale;
         gameController = GameObject.FindGameObjectWithTag(Constants.GAME_CONTROLLER_TAG).GetComponent<GameController>();
-        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
     }
 
     void Update()
     {
-        if(mouseOnObject && this.GetComponent<CardInfo>().card.HasEnoughMana() && Input.GetMouseButtonDown(0) && gameManager.currentPlayerTurn == Constants.PLAYER1)
+        if(mouseOnObject && this.GetComponent<CardInfo>().card.HasEnoughMana() && Input.GetMouseButtonDown(0) && gameController.currentPlayerTurn == Constants.PLAYER1)
         {
             gameController.HoldObject(this.gameObject);
         }

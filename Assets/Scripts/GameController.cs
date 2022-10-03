@@ -7,16 +7,25 @@ public class GameController : UserGraphicController
     public GameObject activeObject;
     public GameObject mousePointer;
 
-    private GameObject cardPreviewArea;
+    private GameObject battleBoard;
+
+    public List<string> playersTurn;
+    public string currentPlayerTurn;
+    public bool cardPlayed;
+
 
     public GameObject battleSquareToPlayOn;
     void Awake(){
         mousePointer = GameObject.FindGameObjectWithTag(Constants.MOUSE_POINTER_TAG);
         mousePointer.SetActive(false);
 
-        cardPreviewArea = GameObject.FindGameObjectWithTag(Constants.CARD_PREVIEW_TAG);
+        playersTurn = new List<string>() { Constants.PLAYER1, Constants.ENEMY1 };
 
         activeObject = null;
+        currentPlayerTurn = Constants.PLAYER1;
+
+        battleBoard = GameObject.FindGameObjectWithTag(Constants.BATTLE_BOARD_TAG);
+
     }
 
     public override void Update(){
@@ -27,6 +36,12 @@ public class GameController : UserGraphicController
             }
             
             mousePointer.transform.position = Input.mousePosition;
+        }
+
+        if (cardPlayed)
+        {
+            TriggerAllOnBoardConditions();
+            cardPlayed = false;
         }
 
         base.Update();
@@ -65,5 +80,20 @@ public class GameController : UserGraphicController
         mousePointer.SetActive(false);
 
         base.ResetSelf();
+    }
+
+    private void TriggerAllOnBoardConditions()
+    {
+        foreach (BattleSquare battleSquare in battleBoard.GetComponentsInChildren<BattleSquare>())
+        {
+            if (battleSquare.cardsPlayedOnObject.Count > 0)
+            {
+                foreach (Card c in battleSquare.cardsPlayedOnObject)
+                {
+                    c.OnBoardConditions();
+                }
+            }
+
+        }
     }
 }
